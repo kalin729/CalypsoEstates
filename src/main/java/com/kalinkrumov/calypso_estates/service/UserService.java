@@ -2,13 +2,16 @@ package com.kalinkrumov.calypso_estates.service;
 
 import com.kalinkrumov.calypso_estates.model.entity.User;
 import com.kalinkrumov.calypso_estates.model.entity.UserRole;
+import com.kalinkrumov.calypso_estates.model.entity.dto.UserRegisterDTO;
 import com.kalinkrumov.calypso_estates.model.enums.UserRoleEnum;
 import com.kalinkrumov.calypso_estates.repository.UserRepository;
 import com.kalinkrumov.calypso_estates.repository.UserRoleRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -16,17 +19,19 @@ public class UserService {
     private final UserRepository userRepository;
     private final UserRoleRepository userRoleRepository;
     private final PasswordEncoder passwordEncoder;
+    private final ModelMapper modelMapper;
 
     public UserService(UserRepository userRepository,
                        UserRoleRepository userRoleRepository,
-                       PasswordEncoder passwordEncoder) {
+                       PasswordEncoder passwordEncoder, ModelMapper modelMapper) {
         this.userRepository = userRepository;
         this.userRoleRepository = userRoleRepository;
         this.passwordEncoder = passwordEncoder;
+        this.modelMapper = modelMapper;
     }
 
     public void init() {
-        if (userRepository.count() == 0 && userRoleRepository.count() == 0){
+        if (userRepository.count() == 0 && userRoleRepository.count() == 0) {
             UserRole adminRole = new UserRole().setUserRole(UserRoleEnum.ADMIN);
             UserRole moderatorRole = new UserRole().setUserRole(UserRoleEnum.MODERATOR);
             UserRole userRole = new UserRole().setUserRole(UserRoleEnum.USER);
@@ -41,7 +46,7 @@ public class UserService {
         }
     }
 
-    private void initAdmin(List<UserRole> roles){
+    private void initAdmin(List<UserRole> roles) {
         User admin = new User()
                 .setRoles(roles)
                 .setFirstName("Admin")
@@ -53,7 +58,7 @@ public class UserService {
         userRepository.save(admin);
     }
 
-    private void initModerator(List<UserRole> roles){
+    private void initModerator(List<UserRole> roles) {
         User moderator = new User()
                 .setRoles(roles)
                 .setFirstName("Moderator")
@@ -65,7 +70,7 @@ public class UserService {
         userRepository.save(moderator);
     }
 
-    private void initUser(List<UserRole> roles){
+    private void initUser(List<UserRole> roles) {
         User user = new User()
                 .setRoles(roles)
                 .setFirstName("User")
@@ -75,5 +80,31 @@ public class UserService {
                 .setPassword(passwordEncoder.encode("user"));
 
         userRepository.save(user);
+    }
+
+    public boolean registerUser(UserRegisterDTO userRegisterDTO) {
+        Optional<User> found = userRepository.findByUsernameAndEmail(userRegisterDTO.getUsername(), userRegisterDTO.getEmail());
+
+        System.out.println("we in?");
+
+        if (found.isPresent()) {
+            return false;
+        }
+
+        if (!userRegisterDTO.getPassword().equals(userRegisterDTO.getConfirmPassword())) {
+            return false;
+        }
+
+        UserRole userRole = new UserRole().setUserRole(UserRoleEnum.USER);
+        User user = modelMapper.map(userRegisterDTO, User.class);
+        user.setPassword(passwordEncoder.encode(userRegisterDTO.getPassword()));
+        user.setRoles(List.of(userRole));
+        userRepository.save(user);
+
+        //todo: fix register
+
+        System.out.println(user.getUsername() + " REGISTERED!!!");
+
+        return true;
     }
 }
