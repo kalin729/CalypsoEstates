@@ -41,7 +41,7 @@ public class SecurityConfiguration {
                 .formLogin().loginPage("/users/login")
                 .usernameParameter(UsernamePasswordAuthenticationFilter.SPRING_SECURITY_FORM_USERNAME_KEY)
                 .passwordParameter(UsernamePasswordAuthenticationFilter.SPRING_SECURITY_FORM_PASSWORD_KEY)
-                .defaultSuccessUrl("/").failureForwardUrl("/user/login-error")
+                .defaultSuccessUrl("/").failureForwardUrl("/users/login-error")
                 .and()
                 .logout().logoutUrl("/users/logout").invalidateHttpSession(true).deleteCookies("JSESSIONID");
 

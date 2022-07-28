@@ -1,8 +1,7 @@
 package com.kalinkrumov.calypso_estates.web;
 
-import com.kalinkrumov.calypso_estates.model.entity.dto.UserRegisterDTO;
+import com.kalinkrumov.calypso_estates.model.dto.UserRegisterDTO;
 import com.kalinkrumov.calypso_estates.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,11 +31,9 @@ public class RegistrationController {
         if(bindingResult.hasErrors() || !this.userService.registerUser(userRegisterDTO)){
             redirectAttributes.addFlashAttribute("userRegisterDTO", userRegisterDTO);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userRegisterDTO", bindingResult);
-            System.out.println("fail");
             return "redirect:register";
         }
-        System.out.println("registereed");
-        return "redirect:login";
+        return "redirect:/";
 
     }
 

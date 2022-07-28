@@ -1,12 +1,22 @@
 package com.kalinkrumov.calypso_estates.model.entity;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.yaml.snakeyaml.events.Event;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Table(name = "users")
 public class User {
+
+    //todo fix users to be uuid not hex
+//    @Id
+//    @GeneratedValue(generator = "UUID")
+//    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+//    private UUID id;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,7 +36,7 @@ public class User {
     @Column(nullable = false)
     private String lastName;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     private List<UserRole> roles = new ArrayList<>();
 
     public Long getId() {

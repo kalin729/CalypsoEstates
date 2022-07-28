@@ -1,4 +1,4 @@
-package com.kalinkrumov.calypso_estates.model.entity.dto;
+package com.kalinkrumov.calypso_estates.model.dto;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
