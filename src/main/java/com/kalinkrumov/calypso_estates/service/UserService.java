@@ -2,11 +2,16 @@ package com.kalinkrumov.calypso_estates.service;
 
 import com.kalinkrumov.calypso_estates.model.entity.User;
 import com.kalinkrumov.calypso_estates.model.entity.UserRole;
-import com.kalinkrumov.calypso_estates.model.entity.dto.UserRegisterDTO;
+import com.kalinkrumov.calypso_estates.model.dto.UserRegisterDTO;
 import com.kalinkrumov.calypso_estates.model.enums.UserRoleEnum;
 import com.kalinkrumov.calypso_estates.repository.UserRepository;
 import com.kalinkrumov.calypso_estates.repository.UserRoleRepository;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -20,14 +25,16 @@ public class UserService {
     private final UserRoleRepository userRoleRepository;
     private final PasswordEncoder passwordEncoder;
     private final ModelMapper modelMapper;
+    private final UserDetailsService appUserDetailsService;
 
     public UserService(UserRepository userRepository,
                        UserRoleRepository userRoleRepository,
-                       PasswordEncoder passwordEncoder, ModelMapper modelMapper) {
+                       PasswordEncoder passwordEncoder, ModelMapper modelMapper, UserDetailsService appUserDetailsService) {
         this.userRepository = userRepository;
         this.userRoleRepository = userRoleRepository;
         this.passwordEncoder = passwordEncoder;
         this.modelMapper = modelMapper;
+        this.appUserDetailsService = appUserDetailsService;
     }
 
     public void init() {
@@ -85,8 +92,6 @@ public class UserService {
     public boolean registerUser(UserRegisterDTO userRegisterDTO) {
         Optional<User> found = userRepository.findByUsernameAndEmail(userRegisterDTO.getUsername(), userRegisterDTO.getEmail());
 
-        System.out.println("we in?");
-
         if (found.isPresent()) {
             return false;
         }
@@ -95,15 +100,21 @@ public class UserService {
             return false;
         }
 
-        UserRole userRole = new UserRole().setUserRole(UserRoleEnum.USER);
+        UserRole userRole = userRoleRepository.getUserRoleByUserRoleEquals(UserRoleEnum.USER);
         User user = modelMapper.map(userRegisterDTO, User.class);
         user.setPassword(passwordEncoder.encode(userRegisterDTO.getPassword()));
         user.setRoles(List.of(userRole));
         userRepository.save(user);
 
-        //todo: fix register
+        UserDetails userDetails = appUserDetailsService.loadUserByUsername(user.getUsername());
 
-        System.out.println(user.getUsername() + " REGISTERED!!!");
+        Authentication authentication = new UsernamePasswordAuthenticationToken(
+                userDetails,
+                userDetails.getPassword(),
+                userDetails.getAuthorities()
+        );
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
         return true;
     }
