@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head::head"></head>
+
+
+<body>
+
+<div th:replace="fragments/navbar :: navbar">
+    Navbar
+</div>
+
+<div class="container">
+    <h2 class="text-center text-white">Add Property</h2>
+    <form
+            th:action="@{/properties/add}"
+            th:method="post"
+            class="main-form mx-auto col-md-8 d-flex flex-column justify-content-center"
+            enctype="multipart/form-data">
+        <div class="row">
+            <div class="form-group col-md-6 mb-3">
+                <label for="title" class="text-white font-weight-bold">Title</label>
+                <input
+                        id="title"
+                        name="title"
+                        type="text"
+                        class="form-control"
+                        placeholder="Title"/>
+            </div>
+            <div class="form-group col-md-6 mb-3">
+                <label for="slug" class="text-white font-weight-bold">Slug</label>
+                <input id="slug"
+                       name="slug"
+                       type="text" min="2" max="20" class="form-control"
+                       placeholder="Slug"/>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="form-group col-md-6 mb-3">
+                <label for="area" class="text-white font-weight-bold">Area</label>
+                <input id="area"
+                       name="area"
+                       type="number" min="1" class="form-control" step="0.01"
+                       placeholder="Area"/>
+            </div>
+            <div class="form-group col-md-6 mb-3">
+                <label class="text-white font-weight-bold" for="images">Images</label>
+                <input
+                        id="images"
+                        name="images"
+                        type="file"
+                        class="form-control"
+                        placeholder="Images"
+                        multiple="multiple"
+                />
+                <p class="invalid-feedback errors alert alert-danger">
+                    Property image is required.
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-md-6 mb-3">
+                <label for="price" class="text-white font-weight-bold">Price</label>
+                <input id="price"
+                       name="price"
+                       type="number" min="1" class="form-control" step="0.01"
+                       placeholder="Price"/>
+            </div>
+            <div class="form-group col-md-6 mb-3">
+                <label for="location" class="text-white font-weight-bold">Location</label>
+                <input id="location"
+                       name="location"
+                       type="text" min="1" max="20" class="form-control"
+                       placeholder="Location"/>
+<!--                <p class="invalid-feedback errors alert alert-danger">-->
+<!--                    Confirmation password is required.-->
+<!--                </p>-->
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-md-6 mb-3">
+                <label for="description" class="text-white font-weight-bold">Description</label>
+                <input id="description"
+                       name="description"
+                       type="textarea" min="1" max="20" class="form-control"
+                       placeholder="Description"/>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col col-md-4">
+                <div class="button-holder d-flex">
+                    <input type="submit" class="btn btn-info btn-lg" value="Add property"/>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div>
+    <footer></footer>
+</div>
+
+</body>
+</html>

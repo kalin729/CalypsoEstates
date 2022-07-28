@@ -9,19 +9,25 @@ public class UserRegisterDTO {
     @NotBlank
     @Size(min = 3, max = 30)
     private String firstName;
+
     @NotBlank
     @Size(min = 3, max = 30)
     private String lastName;
-    @NotBlank
-    @Size(min = 3, max = 30)
-    private String username;
+
     @NotBlank
     @Email
     @Size(min = 3, max = 30)
-    private String email;
+    private String username;
+
+//    @NotBlank
+//    @Email
+//    @Size(min = 3, max = 30)
+//    private String email;
+
     @NotBlank
     @Size(min = 3, max = 30)
     private String password;
+
     @NotBlank
     @Size(min = 3, max = 30)
     private String confirmPassword;
@@ -53,14 +59,14 @@ public class UserRegisterDTO {
         return this;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public UserRegisterDTO setEmail(String email) {
-        this.email = email;
-        return this;
-    }
+//    public String getEmail() {
+//        return email;
+//    }
+//
+//    public UserRegisterDTO setEmail(String email) {
+//        this.email = email;
+//        return this;
+//    }
 
     public String getPassword() {
         return password;

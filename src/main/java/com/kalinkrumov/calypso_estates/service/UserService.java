@@ -58,8 +58,8 @@ public class UserService {
                 .setRoles(roles)
                 .setFirstName("Admin")
                 .setLastName("Adminov")
-                .setEmail("admin@admin.admin")
-                .setUsername("admin")
+//                .setEmail("admin@admin.admin")
+                .setUsername("admin@calypsoestates.com")
                 .setPassword(passwordEncoder.encode("admin"));
 
         userRepository.save(admin);
@@ -70,8 +70,8 @@ public class UserService {
                 .setRoles(roles)
                 .setFirstName("Moderator")
                 .setLastName("Moderatorov")
-                .setEmail("moderator@admin.admin")
-                .setUsername("moderator")
+//                .setEmail("moderator@admin.admin")
+                .setUsername("moderator@calypsoestates.com")
                 .setPassword(passwordEncoder.encode("moderator"));
 
         userRepository.save(moderator);
@@ -82,15 +82,15 @@ public class UserService {
                 .setRoles(roles)
                 .setFirstName("User")
                 .setLastName("Userov")
-                .setEmail("user@admin.admin")
-                .setUsername("user")
+//                .setEmail("user@admin.admin")
+                .setUsername("user@calypsoestates.com")
                 .setPassword(passwordEncoder.encode("user"));
 
         userRepository.save(user);
     }
 
     public boolean registerUser(UserRegisterDTO userRegisterDTO) {
-        Optional<User> found = userRepository.findByUsernameAndEmail(userRegisterDTO.getUsername(), userRegisterDTO.getEmail());
+        Optional<User> found = userRepository.findByUsername(userRegisterDTO.getUsername());
 
         if (found.isPresent()) {
             return false;

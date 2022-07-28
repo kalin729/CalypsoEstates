@@ -1,6 +1,7 @@
 package com.kalinkrumov.calypso_estates.model.entity;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 import org.yaml.snakeyaml.events.Event;
 
 import javax.persistence.*;
@@ -13,20 +14,29 @@ import java.util.UUID;
 public class User {
 
     //todo fix users to be uuid not hex
-//    @Id
-//    @GeneratedValue(generator = "UUID")
-//    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
-//    private UUID id;
-
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    @Type(type = "uuid-char")
+    private UUID id;
+
+    public UUID getId() {
+        return id;
+    }
+
+    public User setId(UUID id) {
+        this.id = id;
+        return this;
+    }
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long id;
 
     @Column(nullable = false, unique = true)
     private String username;
 
-    @Column(nullable = false, unique = true)
-    private String email;
+//    @Column(nullable = false, unique = true)
+//    private String email;
 
     private String password;
 
@@ -39,14 +49,14 @@ public class User {
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     private List<UserRole> roles = new ArrayList<>();
 
-    public Long getId() {
-        return id;
-    }
-
-    public User setId(Long id) {
-        this.id = id;
-        return this;
-    }
+//    public Long getId() {
+//        return id;
+//    }
+//
+//    public User setId(Long id) {
+//        this.id = id;
+//        return this;
+//    }
 
     public String getUsername() {
         return username;
@@ -57,14 +67,14 @@ public class User {
         return this;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public User setEmail(String email) {
-        this.email = email;
-        return this;
-    }
+//    public String getEmail() {
+//        return email;
+//    }
+//
+//    public User setEmail(String email) {
+//        this.email = email;
+//        return this;
+//    }
 
     public String getPassword() {
         return password;

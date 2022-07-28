@@ -2,7 +2,8 @@ package com.kalinkrumov.calypso_estates.model.entity;
 
 import javax.persistence.*;
 
-@Entity(name = "extras")
+@Entity
+@Table(name = "extras")
 public class Extra {
 
     @Id

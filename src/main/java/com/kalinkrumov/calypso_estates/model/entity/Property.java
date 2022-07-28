@@ -1,6 +1,7 @@
 package com.kalinkrumov.calypso_estates.model.entity;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -8,18 +9,30 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
+@Table(name = "properties")
 public class Property {
 
-//    @Id
-//    @GeneratedValue(generator = "UUID")
-//    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
-//    private UUID id;
-
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    @Type(type = "uuid-char")
+    private UUID id;
+
+    public UUID getId() {
+        return id;
+    }
+
+    public Property setId(UUID id) {
+        this.id = id;
+        return this;
+    }
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long id;
 
     private String title;
+
+    private String slug;
 
     private double area;
 
@@ -33,19 +46,19 @@ public class Property {
     @OneToMany
     private List<Extra> extras;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Image> images;
 
     private boolean isVisible;
 
-    public Long getId() {
-        return id;
-    }
-
-    public Property setId(Long id) {
-        this.id = id;
-        return this;
-    }
+//    public Long getId() {
+//        return id;
+//    }
+//
+//    public Property setId(Long id) {
+//        this.id = id;
+//        return this;
+//    }
 
     public String getTitle() {
         return title;
@@ -116,6 +129,15 @@ public class Property {
 
     public Property setVisible(boolean visible) {
         isVisible = visible;
+        return this;
+    }
+
+    public String getSlug() {
+        return slug;
+    }
+
+    public Property setSlug(String slug) {
+        this.slug = slug;
         return this;
     }
 }
