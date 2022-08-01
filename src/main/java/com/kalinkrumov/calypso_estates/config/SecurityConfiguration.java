@@ -32,6 +32,8 @@ public class SecurityConfiguration {
 
         http.authorizeRequests()
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+                .antMatchers("/uploads/**").permitAll()
+//                .antMatchers("/pages/all").permitAll()
                 .antMatchers("/", "/users/login", "/users/register").permitAll()
                 .antMatchers("/pages/moderators").hasRole(UserRoleEnum.MODERATOR.name())
                 .antMatchers("/pages/admins").hasRole(UserRoleEnum.ADMIN.name())

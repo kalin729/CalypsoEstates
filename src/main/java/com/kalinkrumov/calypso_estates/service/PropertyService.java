@@ -25,4 +25,8 @@ public class PropertyService {
         property.setImages(images);
         propertyRepository.save(property);
     }
+
+    public List<Property> getAllProperties(){
+        return propertyRepository.findAll();
+    }
 }

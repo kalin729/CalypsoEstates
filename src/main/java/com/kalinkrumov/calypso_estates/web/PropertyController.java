@@ -23,7 +23,7 @@ import java.util.List;
 @Controller
 public class PropertyController {
 
-    private final String UPLOAD_DIR = "./uploads/";
+    private final String UPLOAD_DIR = "./src/main/resources/static/uploads/";
     private final PropertyService propertyService;
 
     public PropertyController(PropertyService propertyService) {
@@ -50,10 +50,11 @@ public class PropertyController {
             for (MultipartFile file : files) {
                 String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 //                Path path = Paths.get(UPLOAD_DIR + fileName);
-                Path path = Paths.get(UPLOAD_DIR + fileName).normalize().toAbsolutePath();
+                Path path = Paths.get(UPLOAD_DIR + fileName).normalize();
                 System.out.println("PATH:" + path.toString());
+                System.out.println("PATH:" + path.toAbsolutePath());
                 Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
-                images.add(new Image().setImageUrl(path.toString()));
+                images.add(new Image().setImageUrl(fileName));
             }
 //            propertyAddDTO.setImages(images);
             propertyService.addProperty(propertyAddDTO, images);

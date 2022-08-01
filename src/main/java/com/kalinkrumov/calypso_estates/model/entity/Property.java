@@ -46,8 +46,19 @@ public class Property {
     @OneToMany
     private List<Extra> extras;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Image> images;
+
+    private String mainImage;
+
+    public String getMainImage() {
+        return mainImage;
+    }
+
+    public Property setMainImage(String mainImage) {
+        this.mainImage = mainImage;
+        return this;
+    }
 
     private boolean isVisible;
 

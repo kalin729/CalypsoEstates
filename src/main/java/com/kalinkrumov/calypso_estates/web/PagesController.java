@@ -1,11 +1,21 @@
 package com.kalinkrumov.calypso_estates.web;
 
+import com.kalinkrumov.calypso_estates.model.entity.Property;
+import com.kalinkrumov.calypso_estates.service.PropertyService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.util.List;
+
 @Controller
 public class PagesController {
+
+    private final PropertyService propertyService;
+
+    public PagesController(PropertyService propertyService) {
+        this.propertyService = propertyService;
+    }
 
     @GetMapping()
     private String index(Model model){
@@ -13,7 +23,12 @@ public class PagesController {
     }
 
     @GetMapping("/pages/all")
-    private String all(){
+    private String all(Model model){
+
+        List<Property> allProperties = propertyService.getAllProperties();
+
+        model.addAttribute("allProperties", allProperties);
+
         return "all";
     }
 
