@@ -102,9 +102,9 @@
 <!--         id="blah" src="/img/no-image-icon.png" alt="your image" width="150" />-->
 </div>
 
-<div class="container">
-    <h2>Carousel Example</h2>
-    <div id="myCarousel" class="carousel slide" data-ride="carousel">
+<div class="container" style="width: 50%; max-height: 300px;">
+    <h2>Choose a thumbnail</h2>
+    <div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="false">
         <!-- Indicators -->
         <ol class="carousel-indicators">
             <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
@@ -113,9 +113,7 @@
         </ol>
 
         <!-- Wrapper for slides -->
-        <div id="carouse-inner" class="carousel-inner">
-<!--            <div id="placehere" class="item active">-->
-<!--            </div>-->
+        <div id="carousel-inner" class="carousel-inner">
         </div>
 
         <!-- Left and right controls -->
@@ -139,6 +137,7 @@
     images.onchange = evt => {
         var files = images.files
         if (files) {
+            // $('.carousel').carousel('dispose')
             // blah.src = URL.createObjectURL(file)
             let count = 0;
             for (const file of files) {
@@ -149,7 +148,7 @@
                 }else{
                     div.className = "item";
                 }
-                document.getElementById("carouse-inner").appendChild(div);
+                document.getElementById("carousel-inner").appendChild(div);
                 var elem = document.createElement("img");
                 // elem.setAttribute("height", "150");
                 // elem.setAttribute("width", "150");
@@ -157,12 +156,7 @@
                 document.getElementById("img-div-" + count).appendChild(elem);
                 count++;
             }
-        }else{
-            var elem = document.createElement("img");
-            elem.setAttribute("height", "150");
-            elem.setAttribute("width", "150");
-            elem.src = "/img/no-image-icon.png";
-            document.getElementById("placehere").appendChild(elem);
+            $('.carousel').carousel()
         }
     }
 </script>
