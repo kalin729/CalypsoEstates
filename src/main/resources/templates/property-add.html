@@ -74,9 +74,9 @@
                        name="location"
                        type="text" min="1" max="20" class="form-control"
                        placeholder="Location"/>
-<!--                <p class="invalid-feedback errors alert alert-danger">-->
-<!--                    Confirmation password is required.-->
-<!--                </p>-->
+                <!--                <p class="invalid-feedback errors alert alert-danger">-->
+                <!--                    Confirmation password is required.-->
+                <!--                </p>-->
             </div>
         </div>
 
@@ -90,31 +90,31 @@
             </div>
         </div>
 
+        <input id="mainImage"
+               name="mainImage"
+               type="hidden" class="form-control"
+               placeholder="Description"/>
+
         <div class="row">
             <div class="col col-md-4">
                 <div class="button-holder d-flex">
-                    <input type="submit" class="btn btn-info btn-lg" value="Add property"/>
+                    <input onclick="setMainImage()" type="submit" class="btn btn-info btn-lg" value="Add property"/>
                 </div>
             </div>
         </div>
     </form>
-<!--    <img class="mx-auto col-md-8 d-flex flex-column justify-content-center"-->
-<!--         id="blah" src="/img/no-image-icon.png" alt="your image" width="150" />-->
+    <!--    <img class="mx-auto col-md-8 d-flex flex-column justify-content-center"-->
+    <!--         id="blah" src="/img/no-image-icon.png" alt="your image" width="150" />-->
 </div>
 
 <div class="container" style="width: 50%; max-height: 300px;">
     <h2>Choose a thumbnail</h2>
     <div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="false">
         <!-- Indicators -->
-        <ol class="carousel-indicators">
-            <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-            <li data-target="#myCarousel" data-slide-to="1"></li>
-            <li data-target="#myCarousel" data-slide-to="2"></li>
-        </ol>
+        <ol id="carousel-indicators" class="carousel-indicators"></ol>
 
         <!-- Wrapper for slides -->
-        <div id="carousel-inner" class="carousel-inner">
-        </div>
+        <div id="carousel-inner" class="carousel-inner"></div>
 
         <!-- Left and right controls -->
         <a class="left carousel-control" href="#myCarousel" data-slide="prev">
@@ -135,29 +135,47 @@
 </body>
 <script>
     images.onchange = evt => {
-        var files = images.files
+        const toDeleteIndicators = document.getElementById("carousel-indicators");
+        toDeleteIndicators.innerHTML = "";
+        const toDeleteImages = document.getElementById("carousel-inner");
+        toDeleteImages.innerHTML = "";
+
+        const files = images.files;
         if (files) {
-            // $('.carousel').carousel('dispose')
-            // blah.src = URL.createObjectURL(file)
             let count = 0;
             for (const file of files) {
-                var div = document.createElement("div");
+                const div = document.createElement("div");
                 div.id = "img-div-" + count;
-                if (count === 0){
+                if (count === 0) {
                     div.className = "item active";
-                }else{
+                } else {
                     div.className = "item";
                 }
+                div.setAttribute("image-name", "" + file.name);
                 document.getElementById("carousel-inner").appendChild(div);
-                var elem = document.createElement("img");
-                // elem.setAttribute("height", "150");
-                // elem.setAttribute("width", "150");
-                elem.src = URL.createObjectURL(file);
-                document.getElementById("img-div-" + count).appendChild(elem);
+
+                const image = document.createElement("img");
+                image.src = URL.createObjectURL(file);
+                // image.setAttribute("width", "50%");
+                // image.setAttribute("min-height", "300px");
+                // image.setAttribute("max-height", "300px");
+                document.getElementById("img-div-" + count).appendChild(image);
+
+                const point = document.createElement("li");
+                point.setAttribute("data-target", "#myCarousel");
+                point.setAttribute("data-slide-to", "" + count);
+                point.setAttribute("class", "active");
+                document.getElementById("carousel-indicators").appendChild(point);
                 count++;
             }
             $('.carousel').carousel()
         }
+    }
+
+    function setMainImage() {
+        const imageDiv = document.getElementsByClassName("item active");
+        let image = $('.item.active').attr('image-name');
+        $("#mainImage").val(image);
     }
 </script>
 </html>

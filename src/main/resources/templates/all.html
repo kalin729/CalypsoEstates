@@ -17,12 +17,16 @@
     <br>
     <img src="/img/tu-new.png" alt="">
     <h2 class="text-center text-black">Properties</h2>
-    <div th:each="p : ${allProperties}" th:object="${p}">
-        <h3 th:text="*{title}">Property Name</h3>
-        <div>
-            <th th:each="i : ${p.images}" th:object="${i}">
-                <img th:src="@{'/uploads/' + *{imageUrl}}" alt="" width="150">
-            </th>
+    <div class="row property-list" th:each="p : ${allProperties}" th:object="${p}">
+        <div class="col col-8">
+            <div>
+                <h3 th:text="*{title} + ', ' + *{location}">Property Name</h3>
+                <img th:src="@{'/uploads/' + *{mainImage}}" alt="" width="150">
+            </div>
+        </div>
+        <div class="col col-4">
+            <h3 th:text="'€' + *{price}">Property Price</h3>
+            <a class="btn btn-primary" th:href="@{/properties/{slug}(slug = *{slug})}" role="button">Details</a>
         </div>
     </div>
 </div>

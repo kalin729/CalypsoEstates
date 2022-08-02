@@ -53,3 +53,13 @@ footer {
     position: sticky;
     left: 0;
 }
+
+.property-list{
+    border: gray solid 2px;
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+}
+
+.property-list:hover{
+    border: #000000 solid 2px;
+}

@@ -19,6 +19,17 @@ public class PropertyAddDTO {
 
     private String location;
 
+    private String mainImage;
+
+    public String getMainImage() {
+        return mainImage;
+    }
+
+    public PropertyAddDTO setMainImage(String mainImage) {
+        this.mainImage = mainImage;
+        return this;
+    }
+
     public String getLocation() {
         return location;
     }
