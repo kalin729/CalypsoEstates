@@ -15,6 +15,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -104,6 +105,7 @@ public class UserService {
         User user = modelMapper.map(userRegisterDTO, User.class);
         user.setPassword(passwordEncoder.encode(userRegisterDTO.getPassword()));
         user.setRoles(List.of(userRole));
+        user.setCreatedAt(LocalDateTime.now());
         userRepository.save(user);
 
         UserDetails userDetails = appUserDetailsService.loadUserByUsername(user.getUsername());

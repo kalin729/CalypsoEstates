@@ -7,6 +7,7 @@ import com.kalinkrumov.calypso_estates.repository.PropertyRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -23,10 +24,15 @@ public class PropertyService {
     public void addProperty(PropertyAddDTO propertyAddDTO, List<Image> images){
         Property property = modelMapper.map(propertyAddDTO, Property.class);
         property.setImages(images);
+        property.setCreatedAt(LocalDateTime.now());
         propertyRepository.save(property);
     }
 
     public List<Property> getAllProperties(){
-        return propertyRepository.findAll();
+        return propertyRepository.findAllByOrderByCreatedAtAsc();
+    }
+
+    public Property getPropertyBySlug(String slug) {
+        return propertyRepository.findBySlug(slug);
     }
 }

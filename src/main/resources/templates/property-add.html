@@ -12,6 +12,9 @@
 </div>
 
 <div class="container">
+    <!--<div th:replace="fragments/admin-sidenav :: admin-sidenav">-->
+    <!--    Admin Sidenav-->
+    <!--</div>-->
     <h2 class="text-center text-white">Add Property</h2>
     <form
             th:action="@{/properties/add}"
@@ -156,7 +159,7 @@
 
                 const image = document.createElement("img");
                 image.src = URL.createObjectURL(file);
-                // image.setAttribute("width", "50%");
+                image.setAttribute("height", "300px");
                 // image.setAttribute("min-height", "300px");
                 // image.setAttribute("max-height", "300px");
                 document.getElementById("img-div-" + count).appendChild(image);

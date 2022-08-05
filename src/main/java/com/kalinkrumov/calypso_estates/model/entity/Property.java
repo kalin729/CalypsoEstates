@@ -5,6 +5,7 @@ import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -40,6 +41,11 @@ public class Property {
 
     private String location;
 
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
+    private String mainImage;
+
     @Column(columnDefinition = "TEXT")
     private String description;
 
@@ -49,7 +55,13 @@ public class Property {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Image> images;
 
-    private String mainImage;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
 
     public String getMainImage() {
         return mainImage;

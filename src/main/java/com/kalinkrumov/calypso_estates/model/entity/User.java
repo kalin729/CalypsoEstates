@@ -5,6 +5,8 @@ import org.hibernate.annotations.Type;
 import org.yaml.snakeyaml.events.Event;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -46,6 +48,9 @@ public class User {
     @Column(nullable = false)
     private String lastName;
 
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     private List<UserRole> roles = new ArrayList<>();
 
@@ -75,6 +80,15 @@ public class User {
 //        this.email = email;
 //        return this;
 //    }
+
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
 
     public String getPassword() {
         return password;

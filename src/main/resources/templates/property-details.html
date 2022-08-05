@@ -11,14 +11,19 @@
 </div>
 
 <div class="container">
-<!--    <div th:replace="fragments/admin-sidenav :: admin-sidenav">-->
-<!--        Admin Sidenav-->
-<!--    </div>-->
-    <h2 class="text-center text-white">Welcome to home page</h2>
+    <br>
+    <br>
+    <h3 th:text="${property.title}"></h3>
+    <h3 th:text="${property.price}"></h3>
+    <div th:each="i : ${property.images}" th:object="${i}">
+        <img th:src="@{'/files/' + *{imageUrl}}" alt="" width="150">
+    </div>
 </div>
 
 <div>
     <footer></footer>
 </div>
+
+
 </body>
 </html>
