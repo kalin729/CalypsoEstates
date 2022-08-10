@@ -19,18 +19,6 @@ public class Property {
     @Type(type = "uuid-char")
     private UUID id;
 
-    public UUID getId() {
-        return id;
-    }
-
-    public Property setId(UUID id) {
-        this.id = id;
-        return this;
-    }
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private Long id;
-
     private String title;
 
     private String slug;
@@ -50,38 +38,29 @@ public class Property {
     private String description;
 
     @OneToMany
-    private List<Extra> extras;
+    private List<Amenity> amenities;
+
+    @ManyToOne
+    @JoinColumn(name = "status_id")
+    private Status status;
+
+    private int floor;
+
+    private int baths;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Image> images;
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public String getMainImage() {
-        return mainImage;
-    }
-
-    public Property setMainImage(String mainImage) {
-        this.mainImage = mainImage;
-        return this;
-    }
-
     private boolean isVisible;
 
-//    public Long getId() {
-//        return id;
-//    }
-//
-//    public Property setId(Long id) {
-//        this.id = id;
-//        return this;
-//    }
+    public UUID getId() {
+        return id;
+    }
+
+    public Property setId(UUID id) {
+        this.id = id;
+        return this;
+    }
 
     public String getTitle() {
         return title;
@@ -89,6 +68,15 @@ public class Property {
 
     public Property setTitle(String title) {
         this.title = title;
+        return this;
+    }
+
+    public String getSlug() {
+        return slug;
+    }
+
+    public Property setSlug(String slug) {
+        this.slug = slug;
         return this;
     }
 
@@ -119,6 +107,24 @@ public class Property {
         return this;
     }
 
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public Property setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+        return this;
+    }
+
+    public String getMainImage() {
+        return mainImage;
+    }
+
+    public Property setMainImage(String mainImage) {
+        this.mainImage = mainImage;
+        return this;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -128,12 +134,39 @@ public class Property {
         return this;
     }
 
-    public List<Extra> getExtras() {
-        return extras;
+    public List<Amenity> getAmenities() {
+        return amenities;
     }
 
-    public Property setExtras(List<Extra> extras) {
-        this.extras = extras;
+    public Property setAmenities(List<Amenity> amenities) {
+        this.amenities = amenities;
+        return this;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public Property setStatus(Status status) {
+        this.status = status;
+        return this;
+    }
+
+    public int getFloor() {
+        return floor;
+    }
+
+    public Property setFloor(int floor) {
+        this.floor = floor;
+        return this;
+    }
+
+    public int getBaths() {
+        return baths;
+    }
+
+    public Property setBaths(int baths) {
+        this.baths = baths;
         return this;
     }
 
@@ -152,15 +185,6 @@ public class Property {
 
     public Property setVisible(boolean visible) {
         isVisible = visible;
-        return this;
-    }
-
-    public String getSlug() {
-        return slug;
-    }
-
-    public Property setSlug(String slug) {
-        this.slug = slug;
         return this;
     }
 }

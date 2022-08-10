@@ -70,4 +70,16 @@ public class PropertyController {
         return "property-details.html";
     }
 
+    @GetMapping("/properties")
+    public String properties(Model model){
+
+//        List<Property> properties = propertyService.getPropertiesByPage(page);
+
+        List<Property> properties = propertyService.getAllProperties();
+
+        model.addAttribute("properties", properties);
+
+        return "property-grid";
+    }
+
 }

@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "extras")
-public class Extra {
+public class Amenity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,7 +17,7 @@ public class Extra {
         return id;
     }
 
-    public Extra setId(Long id) {
+    public Amenity setId(Long id) {
         this.id = id;
         return this;
     }
@@ -26,7 +26,7 @@ public class Extra {
         return description;
     }
 
-    public Extra setDescription(String description) {
+    public Amenity setDescription(String description) {
         this.description = description;
         return this;
     }

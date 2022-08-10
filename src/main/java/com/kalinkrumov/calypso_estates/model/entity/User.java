@@ -15,30 +15,14 @@ import java.util.UUID;
 @Table(name = "users")
 public class User {
 
-    //todo fix users to be uuid not hex
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     @Type(type = "uuid-char")
     private UUID id;
 
-    public UUID getId() {
-        return id;
-    }
-
-    public User setId(UUID id) {
-        this.id = id;
-        return this;
-    }
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private Long id;
-
     @Column(nullable = false, unique = true)
     private String username;
-
-//    @Column(nullable = false, unique = true)
-//    private String email;
 
     private String password;
 
@@ -54,14 +38,14 @@ public class User {
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     private List<UserRole> roles = new ArrayList<>();
 
-//    public Long getId() {
-//        return id;
-//    }
-//
-//    public User setId(Long id) {
-//        this.id = id;
-//        return this;
-//    }
+    public UUID getId() {
+        return id;
+    }
+
+    public User setId(UUID id) {
+        this.id = id;
+        return this;
+    }
 
     public String getUsername() {
         return username;
@@ -70,24 +54,6 @@ public class User {
     public User setUsername(String username) {
         this.username = username;
         return this;
-    }
-
-//    public String getEmail() {
-//        return email;
-//    }
-//
-//    public User setEmail(String email) {
-//        this.email = email;
-//        return this;
-//    }
-
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
     }
 
     public String getPassword() {
@@ -114,6 +80,15 @@ public class User {
 
     public User setLastName(String lastName) {
         this.lastName = lastName;
+        return this;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public User setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
         return this;
     }
 

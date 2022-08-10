@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="fragments/head::head"></head>
-
 
 <body>
 
-<div th:replace="fragments/navbar :: navbar">
-    Navbar
-</div>
+<div th:replace="fragments/navbar::search"></div>
+
+<nav th:replace="fragments/navbar::navbar"></nav>
 
 <div class="container">
     <h2 class="text-center text-black">Login</h2>
