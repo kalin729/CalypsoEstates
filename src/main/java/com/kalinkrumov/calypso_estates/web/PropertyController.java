@@ -1,39 +1,44 @@
 package com.kalinkrumov.calypso_estates.web;
 
 import com.kalinkrumov.calypso_estates.model.dto.PropertyAddDTO;
+import com.kalinkrumov.calypso_estates.model.entity.Amenity;
 import com.kalinkrumov.calypso_estates.model.entity.Image;
 import com.kalinkrumov.calypso_estates.model.entity.Property;
+import com.kalinkrumov.calypso_estates.service.AmenityService;
 import com.kalinkrumov.calypso_estates.service.FilesStorageService;
 import com.kalinkrumov.calypso_estates.service.PropertyService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 
 @Controller
 public class PropertyController {
 
-//    private final String UPLOAD_DIR = "./src/main/uploads/";
+    private final AmenityService amenityService;
     private final PropertyService propertyService;
     private final FilesStorageService filesStorageService;
 
-    public PropertyController(PropertyService propertyService, FilesStorageService filesStorageService) {
+    public PropertyController(AmenityService amenityService, PropertyService propertyService, FilesStorageService filesStorageService) {
+        this.amenityService = amenityService;
         this.propertyService = propertyService;
         this.filesStorageService = filesStorageService;
     }
 
     @GetMapping("/properties/add")
-    private String addProperty() {
+    private String addProperty(Model model) {
+
+        List<Amenity> amenities = amenityService.getAllAmenities();
+
+        model.addAttribute("amenities", amenities);
+
         return "property-add";
     }
 
@@ -41,6 +46,7 @@ public class PropertyController {
     private String addProperty(@RequestParam("images") MultipartFile[] files,
                                @Valid PropertyAddDTO propertyAddDTO,
                                RedirectAttributes redirectAttributes) {
+
         if (files.length == 0) {
             redirectAttributes.addFlashAttribute("message", "Please select file/s to upload.");
             return "redirect:/";
@@ -48,11 +54,12 @@ public class PropertyController {
 
         List<Image> images = new ArrayList<>();
         for (MultipartFile file : files) {
-            String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-//                Path path = Paths.get(UPLOAD_DIR + fileName).normalize();
-//                Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
-            filesStorageService.save(file);
-            images.add(new Image().setImageUrl(fileName));
+            String fileExtension = Objects.requireNonNull(file.getOriginalFilename()).substring(file.getOriginalFilename().lastIndexOf("."));
+            String newFileName = UUID.randomUUID() + fileExtension;
+            if (filesStorageService.save(file, newFileName)) {
+                images.add(new Image().setImageUrl(newFileName));
+                propertyAddDTO.setMainImage(newFileName);
+            }
         }
         propertyService.addProperty(propertyAddDTO, images);
 
@@ -62,7 +69,7 @@ public class PropertyController {
     }
 
     @GetMapping("/properties/{slug:.+}")
-    private String propertyDetails(@PathVariable String slug, Model model){
+    private String propertyDetails(@PathVariable String slug, Model model) {
         Property property = propertyService.getPropertyBySlug(slug);
 
         model.addAttribute("property", property);
@@ -71,7 +78,7 @@ public class PropertyController {
     }
 
     @GetMapping("/properties")
-    public String properties(Model model){
+    public String properties(Model model) {
 
 //        List<Property> properties = propertyService.getPropertiesByPage(page);
 
@@ -80,6 +87,11 @@ public class PropertyController {
         model.addAttribute("properties", properties);
 
         return "property-grid";
+    }
+
+    @ModelAttribute
+    public PropertyAddDTO propertyAddDTO() {
+        return new PropertyAddDTO();
     }
 
 }

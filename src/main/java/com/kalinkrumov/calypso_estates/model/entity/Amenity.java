@@ -1,6 +1,7 @@
 package com.kalinkrumov.calypso_estates.model.entity;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "amenities")
@@ -12,6 +13,9 @@ public class Amenity {
 
     @Column(columnDefinition = "TEXT")
     private String description;
+
+    @ManyToMany(mappedBy = "amenities")
+    List<Property> properties;
 
     public Long getId() {
         return id;

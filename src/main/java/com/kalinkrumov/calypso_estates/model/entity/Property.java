@@ -37,11 +37,13 @@ public class Property {
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    @OneToMany
+    @ManyToMany
+    @JoinTable(name = "properties_amenities",
+            joinColumns = @JoinColumn(name = "property_id"),
+            inverseJoinColumns = @JoinColumn(name = "amenity_id"))
     private List<Amenity> amenities;
 
-    @ManyToOne
-    @JoinColumn(name = "status_id")
+    @ManyToOne()
     private Status status;
 
     private int floor;
@@ -51,7 +53,7 @@ public class Property {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Image> images;
 
-    private boolean isVisible;
+    private boolean active;
 
     public UUID getId() {
         return id;
@@ -179,12 +181,11 @@ public class Property {
         return this;
     }
 
-    public boolean isVisible() {
-        return isVisible;
+    public boolean isActive() {
+        return active;
     }
 
-    public Property setVisible(boolean visible) {
-        isVisible = visible;
-        return this;
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }

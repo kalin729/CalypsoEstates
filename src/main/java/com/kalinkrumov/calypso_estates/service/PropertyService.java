@@ -1,6 +1,7 @@
 package com.kalinkrumov.calypso_estates.service;
 
 import com.kalinkrumov.calypso_estates.model.dto.PropertyAddDTO;
+import com.kalinkrumov.calypso_estates.model.entity.Amenity;
 import com.kalinkrumov.calypso_estates.model.entity.Image;
 import com.kalinkrumov.calypso_estates.model.entity.Property;
 import com.kalinkrumov.calypso_estates.model.entity.Status;
@@ -41,6 +42,7 @@ public class PropertyService {
         Property property = modelMapper.map(propertyAddDTO, Property.class);
         property.setImages(images);
         property.setCreatedAt(LocalDateTime.now());
+        property.setStatus(statusRepository.findByStatus(propertyAddDTO.getStatus()));
         propertyRepository.save(property);
     }
 

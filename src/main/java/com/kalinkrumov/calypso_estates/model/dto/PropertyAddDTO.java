@@ -1,6 +1,9 @@
 package com.kalinkrumov.calypso_estates.model.dto;
 
+import com.kalinkrumov.calypso_estates.model.entity.Amenity;
 import com.kalinkrumov.calypso_estates.model.entity.Image;
+import com.kalinkrumov.calypso_estates.model.entity.Status;
+import com.kalinkrumov.calypso_estates.model.enums.StatusEnum;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -21,66 +24,109 @@ public class PropertyAddDTO {
 
     private String mainImage;
 
-    public String getMainImage() {
-        return mainImage;
+    private StatusEnum status;
+
+    private int floor;
+
+    private int baths;
+
+    private boolean active;
+
+    private List<Amenity> amenities;
+
+    public List<Amenity> getAmenities() {
+        return amenities;
     }
 
-    public PropertyAddDTO setMainImage(String mainImage) {
-        this.mainImage = mainImage;
-        return this;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public PropertyAddDTO setLocation(String location) {
-        this.location = location;
-        return this;
+    public void setAmenities(List<Amenity> amenities) {
+        this.amenities = amenities;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public PropertyAddDTO setTitle(String title) {
+    public void setTitle(String title) {
         this.title = title;
-        return this;
     }
 
     public String getSlug() {
         return slug;
     }
 
-    public PropertyAddDTO setSlug(String slug) {
+    public void setSlug(String slug) {
         this.slug = slug;
-        return this;
     }
 
     public double getArea() {
         return area;
     }
 
-    public PropertyAddDTO setArea(double area) {
+    public void setArea(double area) {
         this.area = area;
-        return this;
     }
 
     public BigDecimal getPrice() {
         return price;
     }
 
-    public PropertyAddDTO setPrice(BigDecimal price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
-        return this;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public PropertyAddDTO setDescription(String description) {
+    public void setDescription(String description) {
         this.description = description;
-        return this;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getMainImage() {
+        return mainImage;
+    }
+
+    public void setMainImage(String mainImage) {
+        this.mainImage = mainImage;
+    }
+
+    public StatusEnum getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusEnum status) {
+        this.status = status;
+    }
+
+    public int getFloor() {
+        return floor;
+    }
+
+    public void setFloor(int floor) {
+        this.floor = floor;
+    }
+
+    public int getBaths() {
+        return baths;
+    }
+
+    public void setBaths(int baths) {
+        this.baths = baths;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }
