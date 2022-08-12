@@ -33,8 +33,7 @@ public class SecurityConfiguration {
         http.authorizeRequests()
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                 .antMatchers("./src/main/uploads/**").permitAll()
-//                .antMatchers("/resources/uploads/**").permitAll()
-//                .antMatchers("/pages/all").permitAll()
+                .antMatchers("/lib/**").permitAll()
                 .antMatchers("/about").permitAll()
                 .antMatchers("/properties").permitAll()
                 .antMatchers("/contacts").permitAll()
@@ -47,7 +46,7 @@ public class SecurityConfiguration {
                 .formLogin().loginPage("/users/login")
                 .usernameParameter(UsernamePasswordAuthenticationFilter.SPRING_SECURITY_FORM_USERNAME_KEY)
                 .passwordParameter(UsernamePasswordAuthenticationFilter.SPRING_SECURITY_FORM_PASSWORD_KEY)
-                .defaultSuccessUrl("/pages/all").failureForwardUrl("/users/login-error")
+                .defaultSuccessUrl("/").failureForwardUrl("/users/login-error")
                 .and()
                 .logout().logoutUrl("/users/logout").invalidateHttpSession(true).deleteCookies("JSESSIONID");
 

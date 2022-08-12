@@ -3,7 +3,7 @@ package com.kalinkrumov.calypso_estates.model.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "extras")
+@Table(name = "amenities")
 public class Amenity {
 
     @Id

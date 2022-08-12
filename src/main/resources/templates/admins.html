@@ -9,19 +9,14 @@
 <div th:replace="fragments/navbar :: navbar">
     Navbar
 </div>
+<section class="intro-single">
+    <div class="container">
+        <a class="btn btn-primary" th:href="@{/properties/add}" role="button">Add property</a>
+        <a class="btn btn-primary" th:href="@{/amenities/add}" role="button">Add amenities</a>
+    </div>
+</section>
 
-<div class="container">
-<!--    <div th:replace="fragments/admin-sidenav :: admin-sidenav">-->
-<!--        Admin Sidenav-->
-<!--    </div>-->
-    <h2 class="text-center text-black">A page for admins</h2>
-    <br>
-    <a class="btn btn-primary" th:href="@{/properties/add}" role="button">Add property</a>
-</div>
-
-<div>
-    <footer></footer>
-</div>
+<div th:replace="fragments/footer::footer"></div>
 
 
 </body>

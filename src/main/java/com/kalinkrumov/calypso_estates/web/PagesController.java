@@ -38,6 +38,11 @@ public class PagesController {
         return "all";
     }
 
+    @GetMapping("/pages/admins")
+    private String admins(){
+        return "admins";
+    }
+
     @GetMapping("/pages/moderators")
     private String moderators(){
         return "moderators";

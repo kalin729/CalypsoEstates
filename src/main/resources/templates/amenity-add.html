@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="fragments/head::head"></head>
+
+<body>
+
+<div th:replace="fragments/navbar::search"></div>
+
+<nav th:replace="fragments/navbar::navbar"></nav>
+
+<section class="intro-single">
+    <div class="container">
+        <!--<div th:replace="fragments/admin-sidenav :: admin-sidenav">-->
+        <!--    Admin Sidenav-->
+        <!--</div>-->
+        <h2 class="text-center text-white">Add Property</h2>
+        <form
+                th:action="@{/amenities/add}"
+                th:method="post"
+                class="main-form mx-auto col-md-8 d-flex flex-column justify-content-center"
+                enctype="multipart/form-data">
+
+            <div class="row">
+                <div class="form-group col-md-6 mb-3">
+                    <label for="description" class="text-white font-weight-bold">Description</label>
+                    <input id="description"
+                           name="description"
+                           type="textarea" min="1" max="20" class="form-control"
+                           placeholder="Description"/>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col col-md-4">
+                    <div class="button-holder d-flex">
+                        <input type="submit" class="btn btn-info btn-lg" value="Add amenity"/>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+</section>
+
+<div th:replace="fragments/footer::footer"></div>
+
+</body>
+</html>
