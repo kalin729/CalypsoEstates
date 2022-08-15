@@ -1,5 +1,6 @@
 package com.kalinkrumov.calypso_estates.web;
 
+import com.kalinkrumov.calypso_estates.model.PropertyNotFoundException;
 import com.kalinkrumov.calypso_estates.model.dto.PropertyAddDTO;
 import com.kalinkrumov.calypso_estates.model.entity.Amenity;
 import com.kalinkrumov.calypso_estates.model.entity.Image;
@@ -7,10 +8,12 @@ import com.kalinkrumov.calypso_estates.model.entity.Property;
 import com.kalinkrumov.calypso_estates.service.AmenityService;
 import com.kalinkrumov.calypso_estates.service.FilesStorageService;
 import com.kalinkrumov.calypso_estates.service.PropertyService;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
@@ -72,6 +75,10 @@ public class PropertyController {
     private String propertyDetails(@PathVariable String slug, Model model) {
         Property property = propertyService.getPropertyBySlug(slug);
 
+        if (property == null){
+            throw new PropertyNotFoundException(slug);
+        }
+
         model.addAttribute("property", property);
 
         return "property-single";
@@ -92,6 +99,15 @@ public class PropertyController {
     @ModelAttribute
     public PropertyAddDTO propertyAddDTO() {
         return new PropertyAddDTO();
+    }
+
+    @ResponseStatus(value = HttpStatus.NOT_FOUND)
+    @ExceptionHandler({PropertyNotFoundException.class})
+    public ModelAndView onPropertyNotFound(PropertyNotFoundException pnfe){
+        ModelAndView modelAndView = new ModelAndView("property-not-found");
+        modelAndView.addObject("propertySlug", pnfe.getPropertySlug());
+
+        return modelAndView;
     }
 
 }

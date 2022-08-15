@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="fragments/head::head"></head>
+
+<body>
+
+<div th:replace="fragments/navbar::search"></div>
+
+<nav th:replace="fragments/navbar::navbar"></nav>
+
+<!--/ Intro Single star /-->
+<section class="intro-single">
+
+    <div class="container">
+        <h1>404 </h1>
+        <h3>The property you looked for was not found... :(</h3>
+        <p>Property with slug "<th:block th:text="${propertySlug}">SLUG</th:block>" does not exist.</p>
+    </div>
+
+</section>
+
+<div th:replace="fragments/footer::footer"></div>
+
+</body>
+</html>
