@@ -1,12 +1,16 @@
 package com.kalinkrumov.calypso_estates.model.entity;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
+import org.thymeleaf.standard.expression.Each;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -37,11 +41,12 @@ public class Property {
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
     @JoinTable(name = "properties_amenities",
             joinColumns = @JoinColumn(name = "property_id"),
             inverseJoinColumns = @JoinColumn(name = "amenity_id"))
-    private List<Amenity> amenities;
+    private Set<Amenity> amenities;
 
     @ManyToOne()
     private Status status;
@@ -54,6 +59,24 @@ public class Property {
     private List<Image> images;
 
     private boolean active;
+
+    public void addAmenity(Amenity amenity){
+        this.amenities.add(amenity);
+        amenity.getProperties().add(this);
+    }
+
+    public void removeAmenity(Amenity amenity){
+        this.amenities.remove(amenity);
+        amenity.getProperties().remove(this);
+    }
+
+    public Set<Amenity> getAmenities() {
+        return amenities;
+    }
+
+    public void setAmenities(Set<Amenity> amenities) {
+        this.amenities = amenities;
+    }
 
     public UUID getId() {
         return id;
@@ -133,15 +156,6 @@ public class Property {
 
     public Property setDescription(String description) {
         this.description = description;
-        return this;
-    }
-
-    public List<Amenity> getAmenities() {
-        return amenities;
-    }
-
-    public Property setAmenities(List<Amenity> amenities) {
-        this.amenities = amenities;
         return this;
     }
 

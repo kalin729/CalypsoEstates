@@ -15,7 +15,20 @@
         <!--<div th:replace="fragments/admin-sidenav :: admin-sidenav">-->
         <!--    Admin Sidenav-->
         <!--</div>-->
-        <h2 class="text-center text-white">Add Property</h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Amenity</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+            <tr th:each="a : ${amenities}" th:object="${a}">
+                <td th:text="*{description}"></td>
+                <td><a class="btn btn-danger" th:href="@{/amenities/delete/{id}(id = *{id})}">Delete</a></td>
+            </tr>
+            </tbody>
+        </table>
         <form
                 th:action="@{/amenities/add}"
                 th:method="post"

@@ -27,15 +27,17 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final ModelMapper modelMapper;
     private final UserDetailsService appUserDetailsService;
+    private final EmailService emailService;
 
     public UserService(UserRepository userRepository,
                        UserRoleRepository userRoleRepository,
-                       PasswordEncoder passwordEncoder, ModelMapper modelMapper, UserDetailsService appUserDetailsService) {
+                       PasswordEncoder passwordEncoder, ModelMapper modelMapper, UserDetailsService appUserDetailsService, EmailService emailService) {
         this.userRepository = userRepository;
         this.userRoleRepository = userRoleRepository;
         this.passwordEncoder = passwordEncoder;
         this.modelMapper = modelMapper;
         this.appUserDetailsService = appUserDetailsService;
+        this.emailService = emailService;
     }
 
     public void init() {
@@ -117,6 +119,7 @@ public class UserService {
         );
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
+//        emailService.sendRegistrationEmail(user.getUsername(), user.getFirstName() + " " + user.getLastName());
 
         return true;
     }

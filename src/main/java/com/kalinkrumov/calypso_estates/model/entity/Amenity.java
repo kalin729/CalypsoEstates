@@ -2,6 +2,7 @@ package com.kalinkrumov.calypso_estates.model.entity;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "amenities")
@@ -14,8 +15,8 @@ public class Amenity {
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    @ManyToMany(mappedBy = "amenities")
-    List<Property> properties;
+    @ManyToMany(mappedBy = "amenities", fetch = FetchType.EAGER)
+    Set<Property> properties;
 
     public Long getId() {
         return id;
@@ -33,5 +34,13 @@ public class Amenity {
     public Amenity setDescription(String description) {
         this.description = description;
         return this;
+    }
+
+    public Set<Property> getProperties() {
+        return properties;
+    }
+
+    public void setProperties(Set<Property> properties) {
+        this.properties = properties;
     }
 }

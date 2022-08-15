@@ -74,7 +74,7 @@ public class PropertyController {
 
         model.addAttribute("property", property);
 
-        return "property-details.html";
+        return "property-single";
     }
 
     @GetMapping("/properties")

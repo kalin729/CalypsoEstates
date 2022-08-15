@@ -62,7 +62,7 @@
             <div class="card-overlay-a-content">
               <div class="card-header-a">
                 <h2 class="card-title-a">
-                  <a th:text="*{title}" href="#">204 Mount
+                  <a th:text="*{title}" href="#">204 Mount</a>
                     <!--                      <br /> Olive Road Two</a>-->
                 </h2>
               </div>
@@ -70,7 +70,7 @@
                 <div class="price-box d-flex">
                   <span th:text="'€' + *{price}" class="price-a">rent | $ 12.000</span>
                 </div>
-                <a href="property-single.html" class="link-a">Click here to view
+                <a th:href="@{/properties/{slug}(slug = *{slug})}" class="link-a">Click here to view
                   <span class="ion-ios-arrow-forward"></span>
                 </a>
               </div>
@@ -78,21 +78,16 @@
                 <ul class="card-info d-flex justify-content-around">
                   <li>
                     <h4 class="card-info-title">Area</h4>
-                    <span th:text="*{area} + 'm'">340m
-                        <sup>2</sup>
-                      </span>
+                    <span th:text="*{area} + 'm'"></span>
+                    <sup class="text-white">2</sup>
                   </li>
                   <li>
-                    <h4 class="card-info-title">Beds</h4>
-                    <span>2</span>
+                    <h4 class="card-info-title">Floor</h4>
+                    <span th:text="*{floor}"></span>
                   </li>
                   <li>
                     <h4 class="card-info-title">Baths</h4>
-                    <span>4</span>
-                  </li>
-                  <li>
-                    <h4 class="card-info-title">Garages</h4>
-                    <span>1</span>
+                    <span th:text="*{baths}"></span>
                   </li>
                 </ul>
               </div>

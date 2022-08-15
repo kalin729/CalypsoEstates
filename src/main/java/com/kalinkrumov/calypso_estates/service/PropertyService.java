@@ -1,5 +1,6 @@
 package com.kalinkrumov.calypso_estates.service;
 
+import com.fasterxml.jackson.databind.annotation.JsonAppend;
 import com.kalinkrumov.calypso_estates.model.dto.PropertyAddDTO;
 import com.kalinkrumov.calypso_estates.model.entity.Amenity;
 import com.kalinkrumov.calypso_estates.model.entity.Image;
@@ -29,7 +30,7 @@ public class PropertyService {
     }
 
     public void init() {
-        if (propertyRepository.count() == 0 && statusRepository.count() == 0){
+        if (propertyRepository.count() == 0 && statusRepository.count() == 0) {
             Status rentStatus = new Status().setStatus(StatusEnum.RENT);
             Status saleStatus = new Status().setStatus(StatusEnum.SALE);
 
@@ -60,6 +61,10 @@ public class PropertyService {
 
     }
 
+//    public List<Property> getPropertiesByAmenities(List<Amenity> amenities){
+//        return propertyRepository.findAllByAmenitiesEquals(amenities);
+//    }
+
     public List<Property> getPropertiesByPage(int page) {
 
         List<Property> allProperties = propertyRepository.findAllByOrderByCreatedAtAsc();
@@ -74,5 +79,11 @@ public class PropertyService {
             }
         }
         return filteredProperties;
+    }
+
+    public void removeAmenity(Property property, Amenity toDelete) {
+        Property toRemoveFrom = propertyRepository.findById(property.getId()).orElse(null);
+        toRemoveFrom.removeAmenity(toDelete);
+        propertyRepository.save(toRemoveFrom);
     }
 }
