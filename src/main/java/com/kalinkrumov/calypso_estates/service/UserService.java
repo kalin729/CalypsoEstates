@@ -92,6 +92,14 @@ public class UserService {
         userRepository.save(user);
     }
 
+    public List<User> getDeactivatedUsers(){
+        return userRepository.findAllDeactivated();
+    }
+
+    public void deleteUser(User user){
+        userRepository.delete(user);
+    }
+
     public boolean registerUser(UserRegisterDTO userRegisterDTO) {
         Optional<User> found = userRepository.findByUsername(userRegisterDTO.getUsername());
 
@@ -108,6 +116,7 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(userRegisterDTO.getPassword()));
         user.setRoles(List.of(userRole));
         user.setCreatedAt(LocalDateTime.now());
+        user.setActive(true);
         userRepository.save(user);
 
         UserDetails userDetails = appUserDetailsService.loadUserByUsername(user.getUsername());
