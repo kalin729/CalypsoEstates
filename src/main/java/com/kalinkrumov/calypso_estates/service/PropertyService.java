@@ -1,6 +1,5 @@
 package com.kalinkrumov.calypso_estates.service;
 
-import com.fasterxml.jackson.databind.annotation.JsonAppend;
 import com.kalinkrumov.calypso_estates.model.dto.PropertyAddDTO;
 import com.kalinkrumov.calypso_estates.model.entity.Amenity;
 import com.kalinkrumov.calypso_estates.model.entity.Image;
@@ -10,10 +9,11 @@ import com.kalinkrumov.calypso_estates.model.enums.StatusEnum;
 import com.kalinkrumov.calypso_estates.repository.PropertyRepository;
 import com.kalinkrumov.calypso_estates.repository.StatusRepository;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -21,11 +21,13 @@ public class PropertyService {
 
     private final PropertyRepository propertyRepository;
     private final StatusRepository statusRepository;
+    private final FilesStorageService filesStorageService;
     private final ModelMapper modelMapper;
 
-    public PropertyService(PropertyRepository propertyRepository, StatusRepository statusRepository, ModelMapper modelMapper) {
+    public PropertyService(PropertyRepository propertyRepository, StatusRepository statusRepository, FilesStorageService filesStorageService, ModelMapper modelMapper) {
         this.propertyRepository = propertyRepository;
         this.statusRepository = statusRepository;
+        this.filesStorageService = filesStorageService;
         this.modelMapper = modelMapper;
     }
 
@@ -56,34 +58,47 @@ public class PropertyService {
     }
 
     public List<Property> getThreeRandomProperties() {
-
         return propertyRepository.getThreeRandomProperties();
-
     }
 
-//    public List<Property> getPropertiesByAmenities(List<Amenity> amenities){
-//        return propertyRepository.findAllByAmenitiesEquals(amenities);
-//    }
+    public Page<Property> getPropertiesByPage(Pageable pageable) {
+        return propertyRepository.findAll(pageable);
+    }
 
-    public List<Property> getPropertiesByPage(int page) {
-
-        List<Property> allProperties = propertyRepository.findAllByOrderByCreatedAtAsc();
-        List<Property> filteredProperties = new ArrayList<>();
-        long maxProperties = propertyRepository.count();
-
-        for (int i = (page * 9) - 9; i < page * 9; i++) {
-            if (i < maxProperties) {
-                filteredProperties.add(allProperties.get(i));
-            } else {
-                break;
-            }
+    public void removeAmenity(Amenity toDelete) {
+        for (Property p : toDelete.getProperties()) {
+            p.removeAmenity(toDelete);
+            propertyRepository.save(p);
         }
-        return filteredProperties;
+
     }
 
-    public void removeAmenity(Property property, Amenity toDelete) {
-        Property toRemoveFrom = propertyRepository.findById(property.getId()).orElse(null);
-        toRemoveFrom.removeAmenity(toDelete);
-        propertyRepository.save(toRemoveFrom);
+    public PropertyAddDTO getPropertyAddDTOBySlug(String slug) {
+        return modelMapper.map(propertyRepository.findBySlug(slug), PropertyAddDTO.class);
+    }
+
+    public void updateProperty(String slug, PropertyAddDTO propertyAddDTO) {
+        Property property = modelMapper.map(propertyAddDTO, Property.class);
+        property.setId(propertyRepository.findBySlug(slug).getId());
+        property.setStatus(statusRepository.findByStatus(propertyAddDTO.getStatus()));
+        property.setImages(propertyRepository.findBySlug(slug).getImages());
+        property.setMainImage(propertyRepository.findBySlug(slug).getMainImage());
+        property.setCreatedAt(propertyRepository.findBySlug(slug).getCreatedAt());
+
+        propertyRepository.save(property);
+    }
+
+    public boolean deleteProperty(String slug) {
+        Property toDelete = propertyRepository.findBySlug(slug);
+
+        toDelete.getAmenities().removeAll(toDelete.getAmenities());
+        toDelete.getImages().forEach(i -> filesStorageService.delete(i.getImageUrl()));
+        toDelete.getImages().removeAll(toDelete.getImages());
+
+        propertyRepository.save(toDelete);
+
+        propertyRepository.delete(toDelete);
+
+        return true;
     }
 }

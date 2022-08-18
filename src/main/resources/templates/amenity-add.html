@@ -17,23 +17,26 @@
         <!--</div>-->
         <table class="table table-striped">
             <thead>
-                <tr>
-                    <th scope="col">Amenity</th>
-                    <th scope="col">Action</th>
-                </tr>
+            <tr>
+                <th scope="col">Amenity</th>
+                <th scope="col">Action</th>
+            </tr>
             </thead>
             <tbody>
             <tr th:each="a : ${amenities}" th:object="${a}">
                 <td th:text="*{description}"></td>
-                <td><a class="btn btn-danger" th:href="@{/amenities/delete/{id}(id = *{id})}">Delete</a></td>
+                <td>
+                    <a class="btn btn-info" th:href="@{/amenities/edit/{id}(id = *{id})}">Edit</a>
+                    <a class="btn btn-danger" th:href="@{/amenities/delete/{id}(id = *{id})}">Delete</a>
+                </td>
             </tr>
             </tbody>
         </table>
         <form
-                th:action="@{/amenities/add}"
-                th:method="post"
+                th:action="${toEdit==null} ? @{/amenities/add} : @{/amenities/edit/{id}(id = ${id})}"
                 class="main-form mx-auto col-md-8 d-flex flex-column justify-content-center"
-                enctype="multipart/form-data">
+                enctype="multipart/form-data"
+                method="post">
 
             <div class="row">
                 <div class="form-group col-md-6 mb-3">
@@ -41,14 +44,16 @@
                     <input id="description"
                            name="description"
                            type="textarea" min="1" max="20" class="form-control"
-                           placeholder="Description"/>
+                           placeholder="Description"
+                           th:value="${toEdit}!=null ? ${toEdit} : ''"
+                    />
                 </div>
             </div>
 
             <div class="row">
                 <div class="col col-md-4">
                     <div class="button-holder d-flex">
-                        <input type="submit" class="btn btn-info btn-lg" value="Add amenity"/>
+                        <input type="submit" class="btn btn-info btn-lg" th:value="${toEdit} != null ? 'Edit amenity' : 'Add amenity'"/>
                     </div>
                 </div>
             </div>

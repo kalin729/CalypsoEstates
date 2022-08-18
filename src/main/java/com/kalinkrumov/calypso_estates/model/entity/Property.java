@@ -62,20 +62,31 @@ public class Property {
 
     public void addAmenity(Amenity amenity){
         this.amenities.add(amenity);
-        amenity.getProperties().add(this);
+//        amenity.getProperties().add(this);
     }
 
     public void removeAmenity(Amenity amenity){
         this.amenities.remove(amenity);
-        amenity.getProperties().remove(this);
+//        amenity.getProperties().remove(this);
+    }
+
+    public void addImage(Image image){
+        this.images.add(image);
+//        amenity.getProperties().add(this);
+    }
+
+    public void removeImage(Image image){
+        this.images.remove(image);
+//        amenity.getProperties().remove(this);
     }
 
     public Set<Amenity> getAmenities() {
         return amenities;
     }
 
-    public void setAmenities(Set<Amenity> amenities) {
+    public Property setAmenities(Set<Amenity> amenities) {
         this.amenities = amenities;
+        return this;
     }
 
     public UUID getId() {

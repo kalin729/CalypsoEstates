@@ -17,7 +17,7 @@
         <!--</div>-->
         <h2 class="text-center text-white">Add Property</h2>
         <form
-                th:action="@{/properties/add}"
+                th:action="${toEdit==null} ? @{/properties/add} : @{/properties/edit/{slug}(slug = ${slug})}"
                 th:method="post"
                 th:object="${propertyAddDTO}"
                 class="main-form mx-auto col-md-8 d-flex flex-column justify-content-center"
@@ -30,14 +30,16 @@
                             name="title"
                             type="text"
                             class="form-control"
-                            placeholder="Title"/>
+                            placeholder="Title"
+                            th:value="${toEdit}!=null ? ${toEdit.title} : ''"/>
                 </div>
                 <div class="form-group col-md-6 mb-3">
                     <label for="slug" class="text-white font-weight-bold">Slug</label>
                     <input id="slug"
                            name="slug"
                            type="text" min="2" max="20" class="form-control"
-                           placeholder="Slug"/>
+                           placeholder="Slug"
+                           th:value="${toEdit}!=null ? ${toEdit.slug} : ''"/>
                 </div>
 
             </div>
@@ -47,9 +49,10 @@
                     <input id="area"
                            name="area"
                            type="number" min="1" class="form-control" step="0.01"
-                           placeholder="Area"/>
+                           placeholder="Area"
+                           th:value="${toEdit}!=null ? ${toEdit.area} : ''"/>
                 </div>
-                <div class="form-group col-md-6 mb-3">
+                <div th:if="${toEdit==null}" class="form-group col-md-6 mb-3">
                     <label class="text-white font-weight-bold" for="images">Images</label>
                     <input
                             id="images"
@@ -58,6 +61,8 @@
                             class="form-control"
                             placeholder="Images"
                             multiple="multiple"
+                            accept="image/png, image/gif, image/jpeg"
+                            th:value="${toEdit}!=null ? ${toEdit.images} : ''"
                     />
                     <p class="invalid-feedback errors alert alert-danger">
                         Property image is required.
@@ -70,14 +75,16 @@
                     <input id="price"
                            name="price"
                            type="number" min="1" class="form-control" step="0.01"
-                           placeholder="Price"/>
+                           placeholder="Price"
+                           th:value="${toEdit}!=null ? ${toEdit.price} : ''"/>
                 </div>
                 <div class="form-group col-md-6 mb-3">
                     <label for="location" class="text-white font-weight-bold">Location</label>
                     <input id="location"
                            name="location"
                            type="text" min="1" max="20" class="form-control"
-                           placeholder="Location"/>
+                           placeholder="Location"
+                           th:value="${toEdit}!=null ? ${toEdit.location} : ''"/>
                     <!--                <p class="invalid-feedback errors alert alert-danger">-->
                     <!--                    Confirmation password is required.-->
                     <!--                </p>-->
@@ -87,17 +94,19 @@
             <div class="row">
                 <div class="form-group col-md-6 mb-3">
                     <label for="status" class="text-white font-weight-bold">Status</label>
-                    <select th:field="*{status}" id="status" name="status"
+                    <select id="status" name="status"
                             class="custom-select custom-select-lg mb-3 w-100">
                         <option value="" selected>Status</option>
                         <option th:each="s : ${T(com.kalinkrumov.calypso_estates.model.enums.StatusEnum).values()}"
                                 th:value="${s}"
-                                th:text="${s}"></option>
+                                th:text="${s}"
+                                th:selected="${toEdit} != null ? '' + ${toEdit.status} == '' + ${s} : false"></option>
                     </select>
                 </div>
                 <div class="form-group col-md-6 mb-3 w-100" style="border: 2px solid #ccc; overflow-y: scroll;">
                     <th:block th:each="a : ${amenities}">
-                        <input type="checkbox" name="amenities" th:value="${a.id}">
+                        <input type="checkbox" name="amenities" th:value="${a.id}"
+                               th:checked="${toEdit} != null ? ${#lists.contains('' + toEdit.amenities, '' + a)} : false">
                         <label style="width: 90%" th:text="${a.description}"></label>
                     </th:block>
                 </div>
@@ -109,14 +118,16 @@
                     <input id="floor"
                            name="floor"
                            type="number" class="form-control" step="1"
-                           placeholder="Floor"/>
+                           placeholder="Floor"
+                           th:value="${toEdit}!=null ? ${toEdit.floor} : ''"/>
                 </div>
                 <div class="form-group col-md-6 mb-3">
                     <label for="baths" class="text-white font-weight-bold">Baths</label>
                     <input id="baths"
                            name="baths"
                            type="number" class="form-control" step="1"
-                           placeholder="Baths"/>
+                           placeholder="Baths"
+                           th:value="${toEdit}!=null ? ${toEdit.baths} : ''"/>
                 </div>
             </div>
 
@@ -124,23 +135,25 @@
                 <div class="form-group col-md-6 mb-3">
                     <label for="description" class="text-white font-weight-bold">Description</label>
                     <textarea id="description"
-                           name="description"
-                           th:rows="5"
-                           th:cols="50"
-                           min="1" max="20" class="form-control"
-                           placeholder="Description"></textarea>
+                              name="description"
+                              th:rows="5"
+                              th:cols="50"
+                              min="1" max="20" class="form-control"
+                              placeholder="Description">[[${toEdit}!=null ? ${toEdit.description} : '']]</textarea>
                 </div>
             </div>
 
             <div class="custom-control custom-switch">
-                <input class="custom-control-input" type="checkbox" id="active" name="active" th:field="${propertyAddDTO.active}">
+                <input class="custom-control-input" type="checkbox" id="active" name="active"
+                       th:checked="${toEdit} != null ? ${toEdit.active} : 'false'"/>
                 <label class="custom-control-label" for="active">Active</label>
             </div>
 
             <input id="mainImage"
                    name="mainImage"
                    type="hidden" class="form-control"
-                   placeholder="Description"/>
+                   placeholder="MainImage"
+                   th:value="${toEdit} != null ? ${toEdit.mainImage} : ''"/>
 
             <div class="row">
                 <div class="col col-md-4">
@@ -156,30 +169,34 @@
         <!--         id="blah" src="/img/no-image-icon.png" alt="your image" width="150" />-->
     </div>
 
-    <div class="container">
-        <h2 style="text-align: center">Choose a thumbnail</h2>
-        <div id="myCarousel"
-             class="carousel slide w-50 h-auto"
-             data-ride="carousel"
-             data-interval="false"
-             style="background-color: black; margin-left: auto; margin-right: auto">
-            <!-- Indicators -->
-            <ol id="carousel-indicators" class="carousel-indicators"></ol>
+    <th:block th:if="${toEdit} == null">
+        <div class="container">
+            <h2 style="text-align: center">Choose a thumbnail</h2>
+            <div id="myCarousel"
+                 class="carousel slide w-50 h-auto"
+                 data-ride="carousel"
+                 data-interval="false"
+                 style="background-color: black; margin-left: auto; margin-right: auto">
+                <!-- Indicators -->
+                <ol id="carousel-indicators" class="carousel-indicators"></ol>
 
-            <!-- Wrapper for slides -->
-            <div id="carousel-inner" class="carousel-inner"></div>
+                <!-- Wrapper for slides -->
+                <div id="carousel-inner" class="carousel-inner">
+                    <!--todo: image edit-->
+                </div>
 
-            <!-- Left and right controls -->
-            <a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="sr-only">Previous</span>
-            </a>
-            <a class="carousel-control-next" href="#myCarousel" role="button" data-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="sr-only">Next</span>
-            </a>
+                <!-- Left and right controls -->
+                <a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#myCarousel" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </div>
         </div>
-    </div>
+    </th:block>
 
 </section>
 

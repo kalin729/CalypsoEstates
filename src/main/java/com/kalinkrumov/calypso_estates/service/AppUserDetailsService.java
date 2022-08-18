@@ -2,6 +2,7 @@ package com.kalinkrumov.calypso_estates.service;
 
 import com.kalinkrumov.calypso_estates.model.entity.User;
 import com.kalinkrumov.calypso_estates.model.entity.UserRole;
+import com.kalinkrumov.calypso_estates.model.user.AppUserDetails;
 import com.kalinkrumov.calypso_estates.repository.UserRepository;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -30,11 +31,19 @@ public class AppUserDetailsService implements UserDetailsService {
 
     private UserDetails map(User user){
 
-        return org.springframework.security.core.userdetails.User.builder()
-                .username(user.getUsername())
-                .password(user.getPassword())
-                .authorities(user.getRoles().stream().map(this::map).toList())
-                .build();
+//        return org.springframework.security.core.userdetails.User.builder()
+//                .username(user.getUsername())
+//                .password(user.getPassword())
+//                .authorities(user.getRoles().stream().map(this::map).toList())
+//                .build();
+
+        return new AppUserDetails(
+                user.getId(),
+                user.getPassword(),
+                user.getUsername(),
+                user.getFirstName(),
+                user.getLastName(),
+                user.getRoles().stream().map(this::map).toList());
 
     }
 

@@ -15,7 +15,7 @@ public class Amenity {
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    @ManyToMany(mappedBy = "amenities", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "amenities", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     Set<Property> properties;
 
     public Long getId() {
@@ -40,7 +40,8 @@ public class Amenity {
         return properties;
     }
 
-    public void setProperties(Set<Property> properties) {
+    public Amenity setProperties(Set<Property> properties) {
         this.properties = properties;
+        return this;
     }
 }

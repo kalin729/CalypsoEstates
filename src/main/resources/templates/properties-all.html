@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head::head"></head>
+
+
+<body>
+
+<div th:replace="fragments/navbar :: navbar">
+    Navbar
+</div>
+
+<div class="container">
+    <h2 class="text-center text-black">Properties</h2>
+
+    <section class="intro-single">
+        <div class="col-xs-12 col-md-6" style="margin-bottom: 15px; padding: 5px; border: 1px solid gray;"
+             th:each="p : ${allProperties}"
+             th:object="${p}">
+            <!-- First product box start here-->
+            <div class="prod-info-main prod-wrap clearfix">
+                <div class="row">
+                    <div class="col-md-5 col-sm-12 col-xs-12">
+                        <div class="product-image">
+                            <img th:src="@{'/files/' + *{mainImage}}" class="img-responsive" style="width: 150px;">
+                        </div>
+                    </div>
+                    <div class="col-md-7 col-sm-12 col-xs-12">
+                        <div class="product-deatil">
+                            <h5 class="name">
+                                <a th:text="*{title} + ', ' + *{location}"
+                                   th:href="@{/properties/{slug}(slug = *{slug})}">
+                                    Product Code/Name here
+                                </a>
+                                <a href="#">
+                                    <span>Product Category</span>
+                                </a>
+
+                            </h5>
+                            <p class="price-container">
+                                <span th:text="'€' + *{price}">PRICE</span>
+                            </p>
+                            <span class="tag1"></span>
+                        </div>
+                        <div class="description">
+                            <p style="max-width: 75ch;" th:text="*{description}">A Short product description here </p>
+                        </div>
+                        <div class="product-info smart-form">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <a th:href="@{/properties/edit/{slug}(slug = *{slug})}"
+                                       class="btn btn-info">Edit</a>
+                                    <a th:href="@{/properties/delete/{slug}(slug = *{slug})}" class="btn btn-danger">Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end product -->
+        </div>
+    </section>
+
+</div>
+
+<div th:replace="fragments/footer::footer"></div>
+</body>
+</html>

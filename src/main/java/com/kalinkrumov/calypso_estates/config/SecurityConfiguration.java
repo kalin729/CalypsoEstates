@@ -1,5 +1,6 @@
 package com.kalinkrumov.calypso_estates.config;
 
+import com.kalinkrumov.calypso_estates.model.entity.User;
 import com.kalinkrumov.calypso_estates.model.entity.UserRole;
 import com.kalinkrumov.calypso_estates.model.enums.UserRoleEnum;
 import com.kalinkrumov.calypso_estates.repository.UserRepository;
@@ -32,13 +33,14 @@ public class SecurityConfiguration {
 
         http.authorizeRequests()
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-                .antMatchers("/lib/**", "/img/**").permitAll()
-                .antMatchers("/files/**").permitAll()
+                .antMatchers("/lib/**", "/img/**", "/files/**").permitAll()
                 .antMatchers("/about", "/properties", "/contacts").permitAll()
                 .antMatchers("/").permitAll()
                 .antMatchers("/users/login", "/users/register").anonymous()
-                .antMatchers("/pages/moderators").hasRole(UserRoleEnum.MODERATOR.name())
-                .antMatchers("/pages/admins").hasRole(UserRoleEnum.ADMIN.name())
+//                .antMatchers("/pages/moderators").hasRole(UserRoleEnum.MODERATOR.name())
+                .antMatchers("/pages/admins").hasRole(UserRoleEnum.MODERATOR.name())
+                .antMatchers("/amenities/edit/**").hasRole(UserRoleEnum.MODERATOR.name())
+                .antMatchers("/pages/all","/pages/edit/**", "/pages/delete/**").hasRole(UserRoleEnum.MODERATOR.name())
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().loginPage("/users/login")

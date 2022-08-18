@@ -8,9 +8,12 @@ import com.kalinkrumov.calypso_estates.model.entity.Property;
 import com.kalinkrumov.calypso_estates.service.AmenityService;
 import com.kalinkrumov.calypso_estates.service.FilesStorageService;
 import com.kalinkrumov.calypso_estates.service.PropertyService;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
@@ -75,7 +78,7 @@ public class PropertyController {
     private String propertyDetails(@PathVariable String slug, Model model) {
         Property property = propertyService.getPropertyBySlug(slug);
 
-        if (property == null){
+        if (property == null) {
             throw new PropertyNotFoundException(slug);
         }
 
@@ -85,29 +88,73 @@ public class PropertyController {
     }
 
     @GetMapping("/properties")
-    public String properties(Model model) {
+    public String properties(Model model, @PageableDefault(page = 0, size = 6) Pageable pageable) {
 
-//        List<Property> properties = propertyService.getPropertiesByPage(page);
-
-        List<Property> properties = propertyService.getAllProperties();
-
-        model.addAttribute("properties", properties);
+        model.addAttribute("properties", propertyService.getPropertiesByPage(pageable));
 
         return "property-grid";
     }
 
-    @ModelAttribute
-    public PropertyAddDTO propertyAddDTO() {
-        return new PropertyAddDTO();
-    }
-
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     @ExceptionHandler({PropertyNotFoundException.class})
-    public ModelAndView onPropertyNotFound(PropertyNotFoundException pnfe){
+    public ModelAndView onPropertyNotFound(PropertyNotFoundException pnfe) {
         ModelAndView modelAndView = new ModelAndView("property-not-found");
         modelAndView.addObject("propertySlug", pnfe.getPropertySlug());
 
         return modelAndView;
+    }
+
+    @GetMapping("/properties/all")
+    private String all(Model model) {
+
+        List<Property> allProperties = propertyService.getAllProperties();
+
+        model.addAttribute("allProperties", allProperties);
+
+        return "properties-all";
+    }
+
+    @GetMapping("/properties/edit/{slug}")
+    private String edit(@PathVariable String slug, Model model) {
+        PropertyAddDTO property = propertyService.getPropertyAddDTOBySlug(slug);
+        List<Amenity> amenities = amenityService.getAllAmenities();
+
+        model.addAttribute("toEdit", property);
+        model.addAttribute("amenities", amenities);
+
+        return "property-add";
+    }
+
+    @PostMapping("/properties/edit/{slug}")
+    private String edit(@PathVariable String slug, @Valid PropertyAddDTO property, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("error", bindingResult);
+            redirectAttributes.addFlashAttribute("propertyAddDTO", property);
+            return "property-add";
+        }
+
+        propertyService.updateProperty(slug, property);
+
+        return "property-add";
+    }
+
+    @GetMapping("/properties/delete/{slug}")
+    private String delete(@PathVariable String slug, RedirectAttributes redirectAttributes) {
+
+        if (!propertyService.deleteProperty(slug)) {
+            redirectAttributes.addFlashAttribute("error", "Could not delete property.");
+
+            return "redirect:/properties/all";
+        }
+
+        return "redirect:/properties/all";
+    }
+
+
+    @ModelAttribute
+    public PropertyAddDTO propertyAddDTO() {
+        return new PropertyAddDTO();
     }
 
 }

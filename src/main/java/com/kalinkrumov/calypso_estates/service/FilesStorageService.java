@@ -5,6 +5,7 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
@@ -32,6 +33,11 @@ public class FilesStorageService {
             throw new RuntimeException("Could not store the file. Error: " + e.getMessage());
         }
         return true;
+    }
+
+    public boolean delete(String filename){
+        File file = new File(String.valueOf(ROOT.resolve(filename)));
+        return file.delete();
     }
 
     public Resource load(String filename){

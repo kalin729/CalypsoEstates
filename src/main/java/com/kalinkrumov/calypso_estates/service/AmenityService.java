@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class AmenityService {
@@ -31,27 +32,32 @@ public class AmenityService {
         amenitiesRepository.save(amenity);
     }
 
+    public void editAmenity(Long id, AmenityAddDTO amenityAddDTO) {
+        Amenity amenity = modelMapper.map(amenityAddDTO, Amenity.class);
+        amenity.setId(id);
+
+        amenitiesRepository.save(amenity);
+    }
+
     public List<Amenity> getAllAmenities() {
         return amenitiesRepository.findAll();
     }
 
-    public Amenity findById(String amenityId) {
-        return amenitiesRepository.findById(Long.parseLong(amenityId)).orElseThrow(() -> new EntityNotFoundException("Amenity not found."));
+    public Amenity findById(Long amenityId) {
+        return amenitiesRepository.findById(amenityId).orElseThrow(() -> new EntityNotFoundException("Amenity not found."));
     }
 
-    public boolean deleteAmenity(String id) {
+    public boolean deleteAmenity(Long id) {
 
-        try {
-            Amenity toDelete = this.findById(id);
-            List<Property> properties = propertyService.getAllProperties();
-            for (Property property : properties) {
-                propertyService.removeAmenity(property, toDelete);
-            }
-            amenitiesRepository.delete(toDelete);
-        } catch (EntityNotFoundException e) {
-            e.printStackTrace();
-        }
+        Amenity toDelete = this.findById(id);
+        propertyService.removeAmenity(toDelete);
+
+        amenitiesRepository.delete(toDelete);
 
         return true;
+    }
+
+    public AmenityAddDTO getAmenityDTOById(Long id) {
+        return modelMapper.map(amenitiesRepository.findById(id).orElse(null), AmenityAddDTO.class);
     }
 }

@@ -27,16 +27,6 @@ public class PagesController {
         return "index";
     }
 
-    @GetMapping("/pages/all")
-    private String all(Model model){
-
-        List<Property> allProperties = propertyService.getAllProperties();
-
-        model.addAttribute("allProperties", allProperties);
-
-        return "all";
-    }
-
     @GetMapping("/pages/admins")
     private String admins(){
         return "admins";

@@ -4,33 +4,33 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.UUID;
 
 public class AppUserDetails implements UserDetails {
 
-    private final Long id;
+    private final UUID id;
     private final String password;
     private final String username;
-    private final String email;
+//    private final String email;
     private final String firstName;
     private final String lastName;
     private final Collection<GrantedAuthority> authorities;
 
-    public AppUserDetails(Long id, String password, String username, String email, String firstName, String lastName, Collection<GrantedAuthority> authorities) {
+    public AppUserDetails(UUID id, String password, String username, String firstName, String lastName, Collection<GrantedAuthority> authorities) {
         this.id = id;
         this.password = password;
         this.username = username;
-        this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
         this.authorities = authorities;
     }
 
-    public Long getId() {
-        return id;
-    }
+//    public String getEmail() {
+//        return email;
+//    }
 
-    public String getEmail() {
-        return email;
+    public UUID getId() {
+        return id;
     }
 
     public String getFirstName() {

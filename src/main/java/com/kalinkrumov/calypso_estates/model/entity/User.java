@@ -44,8 +44,9 @@ public class User {
         return isActive;
     }
 
-    public void setActive(boolean active) {
+    public User setActive(boolean active) {
         isActive = active;
+        return this;
     }
 
     public UUID getId() {

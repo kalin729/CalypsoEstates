@@ -93,6 +93,7 @@ public class UserService {
     }
 
     public List<User> getDeactivatedUsers(){
+
         return userRepository.findAllDeactivated();
     }
 
