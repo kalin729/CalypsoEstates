@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="fragments/head::head"></head>
+
+<body>
+
+<div th:replace="fragments/navbar::search"></div>
+
+<nav th:replace="fragments/navbar::navbar"></nav>
+
+<!--/ Intro Single star /-->
+<section class="intro-single">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-lg-8">
+                <div class="title-single-box">
+                    <h1 class="title-single">All users</h1>
+                </div>
+            </div>
+            <div class="col-md-12 col-lg-4">
+                <nav aria-label="breadcrumb" class="breadcrumb-box d-flex justify-content-lg-end">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a th:href="@{/pages/admins}">Admin page</a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">
+                            All users
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+<!--/ Intro Single End /-->
+
+<!--/ Property Grid Star /-->
+<section class="all-users">
+    <div class="container">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Roles</th>
+                <th scope="col">Active</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="u : ${users}">
+                <td th:text="*{u.username}"></td>
+                <td>
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                       data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">
+                        Roles
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <form th:action="@{/users/edit_roles/{username}(username = ${u.username})}" th:object="${userRoleChangeDTO}"
+                              method="post">
+                            <th:block
+                                    th:each="r : ${roles}">
+                                <input class="dropdown-item" type="checkbox" name="roles"
+                                       th:value="${r.id}"
+                                       th:checked="${#lists.contains('' + u.roles, '' + r)}"
+                                       style="width: 10%; margin: 0;" onchange="this.form.submit()">
+                                <label th:text="${r.userRole}"></label>
+                            </th:block>
+                        </form>
+                    </div>
+                </td>
+                <td>
+                    <form th:action="@{/users/edit_active/{username}(username = ${u.username})}"
+                          method="post">
+                        <input type="checkbox" name="active" id="active" th:checked="${u.active}" onchange="this.form.submit()">
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+<!--/ Property Grid End /-->
+
+<div th:replace="fragments/footer::footer"></div>
+
+</body>
+</html>

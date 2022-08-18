@@ -32,9 +32,6 @@
                                    th:href="@{/properties/{slug}(slug = *{slug})}">
                                     Product Code/Name here
                                 </a>
-                                <a href="#">
-                                    <span>Product Category</span>
-                                </a>
 
                             </h5>
                             <p class="price-container">
@@ -43,7 +40,7 @@
                             <span class="tag1"></span>
                         </div>
                         <div class="description">
-                            <p style="max-width: 75ch;" th:text="*{description}">A Short product description here </p>
+                            <p style="max-width: 75ch;" th:text="*{active} == true ? 'Active' : 'Not Active'">Active or not </p>
                         </div>
                         <div class="product-info smart-form">
                             <div class="row">

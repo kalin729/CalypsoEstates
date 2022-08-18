@@ -42,6 +42,9 @@ public class FilesStorageService {
 
     public Resource load(String filename){
         try {
+            if (filename.equals("null")){
+                filename = "no-image-icon.png";
+            }
             Path file = ROOT.resolve(filename);
             Resource resource = new UrlResource(file.toUri());
             if (resource.exists() || resource.isReadable()){

@@ -4,8 +4,10 @@ import com.kalinkrumov.calypso_estates.model.entity.User;
 import com.kalinkrumov.calypso_estates.model.entity.UserRole;
 import com.kalinkrumov.calypso_estates.model.user.AppUserDetails;
 import com.kalinkrumov.calypso_estates.repository.UserRepository;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -29,13 +31,13 @@ public class AppUserDetailsService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("No user found with this username/email."));
     }
 
-    private UserDetails map(User user){
+    public AppUserDetails loadCurrentUser(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-//        return org.springframework.security.core.userdetails.User.builder()
-//                .username(user.getUsername())
-//                .password(user.getPassword())
-//                .authorities(user.getRoles().stream().map(this::map).toList())
-//                .build();
+        return (AppUserDetails) loadUserByUsername(authentication.getName());
+    }
+
+    private UserDetails map(User user){
 
         return new AppUserDetails(
                 user.getId(),

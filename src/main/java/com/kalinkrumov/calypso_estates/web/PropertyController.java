@@ -122,7 +122,7 @@ public class PropertyController {
         model.addAttribute("toEdit", property);
         model.addAttribute("amenities", amenities);
 
-        return "property-add";
+        return "admins";
     }
 
     @PostMapping("/properties/edit/{slug}")

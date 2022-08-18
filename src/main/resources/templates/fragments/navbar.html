@@ -111,7 +111,7 @@
             <span></span>
             <span></span>
         </button>
-        <a class="navbar-brand text-brand" th:href="@{/}">Estate<span class="color-b">Agency</span></a>
+        <a class="navbar-brand text-brand" th:href="@{/}">Calypso<span class="color-b">Estates</span></a>
         <button type="button" class="btn btn-link nav-search navbar-toggle-box-collapse d-md-none"
                 data-toggle="collapse"
                 data-target="#navbarTogglerDemo01" aria-expanded="false">
@@ -131,25 +131,9 @@
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{/properties}">Properties</a>
                 </li>
-                <!--                    <li class="nav-item">-->
-                <!--                        <a class="nav-link" href="blog-grid.html">Blog</a>-->
-                <!--                    </li>-->
-                <!--                    <li class="nav-item dropdown">-->
-                <!--                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"-->
-                <!--                           data-toggle="dropdown"-->
-                <!--                           aria-haspopup="true" aria-expanded="false">-->
-                <!--                            Pages-->
-                <!--                        </a>-->
-                <!--                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">-->
-                <!--                            <a class="dropdown-item" href="property-single.html">Property Single</a>-->
-                <!--                            <a class="dropdown-item" href="blog-single.html">Blog Single</a>-->
-                <!--                            <a class="dropdown-item" href="agents-grid.html">Agents Grid</a>-->
-                <!--                            <a class="dropdown-item" href="agent-single.html">Agent Single</a>-->
-                <!--                        </div>-->
-                <!--                    </li>-->
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/contacts}">Contacts</a>
-                </li>
+<!--                <li class="nav-item">-->
+<!--                    <a class="nav-link" th:href="@{/contacts}">Contacts</a>-->
+<!--                </li>-->
                 <li class="nav-item" sec:authorize="!isAuthenticated()">
                     <a class="nav-link" th:href="@{/users/register}" th:text="#{navbar_register}">Register</a>
                 </li>
@@ -157,10 +141,12 @@
                     <a class="nav-link" th:href="@{/users/login}" th:text="#{navbar_login}">Login</a>
                 </li>
                 <li class="nav-item" sec:authorize="isAuthenticated()">
-                    <!--                        <a class="nav-link" th:href="@{/users/logout}">Logout</a>-->
-                        <form th:action="@{/users/logout}" th:method="post">
-                            <input class="btn btn-link nav-link" type="submit" th:value="#{navbar_logout}">
-                        </form>
+                    <a class="nav-link" th:href="@{/users/profile}">Profile</a>
+                </li>
+                <li class="nav-item" sec:authorize="isAuthenticated()">
+                    <form th:action="@{/users/logout}" th:method="post">
+                        <input class="btn btn-link nav-link" type="submit" th:value="#{navbar_logout}">
+                    </form>
                 </li>
                 <li class="nav-item">
                     <form th:method="get">
@@ -169,8 +155,8 @@
                                 onchange="this.form.submit()"
                                 id="lang"
                                 name="lang">
-                            <option value="en_US" th:selected="${#locale.toString()} == 'en_US'">English</option>
-                            <option value="bg_BG" th:selected="${#locale.toString()} == 'bg_BG'">Български</option>
+                            <option value="en_US" th:selected="${#locale.toString()} == 'en_US'">Eng</option>
+                            <option value="bg_BG" th:selected="${#locale.toString()} == 'bg_BG'">Бг</option>
                         </select>
                     </form>
                 </li>
@@ -183,17 +169,6 @@
         </button>
     </div>
 </nav>
-<!--/ Nav End /-->
-
-<!--    <br>-->
-<!--    <br>-->
-
-<!--    <div class="sidenav" sec:authorize="hasRole('MODERATOR') || hasRole('ADMIN')">-->
-<!--        <a th:href="@{/properties/add}">Add property</a>-->
-<!--        <a href="#services">Services</a>-->
-<!--        <a href="#clients">Clients</a>-->
-<!--        <a href="#contact">Contact</a>-->
-<!--    </div>-->
 
 </div>
 

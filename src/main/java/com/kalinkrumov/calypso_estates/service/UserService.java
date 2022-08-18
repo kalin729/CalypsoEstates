@@ -1,5 +1,6 @@
 package com.kalinkrumov.calypso_estates.service;
 
+import com.kalinkrumov.calypso_estates.model.dto.UserRoleChangeDTO;
 import com.kalinkrumov.calypso_estates.model.entity.User;
 import com.kalinkrumov.calypso_estates.model.entity.UserRole;
 import com.kalinkrumov.calypso_estates.model.dto.UserRegisterDTO;
@@ -16,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -132,5 +134,36 @@ public class UserService {
 //        emailService.sendRegistrationEmail(user.getUsername(), user.getFirstName() + " " + user.getLastName());
 
         return true;
+    }
+
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    public List<UserRole> getAllUserRoles(){
+        List<UserRole> userRoles = new ArrayList<>();
+        userRoles.add(userRoleRepository.getUserRoleByUserRoleEquals(UserRoleEnum.USER));
+        userRoles.add(userRoleRepository.getUserRoleByUserRoleEquals(UserRoleEnum.MODERATOR));
+        userRoles.add(userRoleRepository.getUserRoleByUserRoleEquals(UserRoleEnum.ADMIN));
+
+        return userRoles;
+    }
+
+    public void changeUserRoles(String username, UserRoleChangeDTO userRoleChangeDTO){
+        User user = userRepository.findByUsername(username).orElse(null);
+        user.setRoles(userRoleChangeDTO.getRoles());
+
+        userRepository.save(user);
+    }
+
+    public void changeUserActiveStatus(String username) {
+        User user = userRepository.findByUsername(username).orElse(null);
+        user.setActive(!user.isActive());
+
+        userRepository.save(user);
+    }
+
+    public User getUserByUsername(String username) {
+        return userRepository.findByUsername(username).orElse(null);
     }
 }
