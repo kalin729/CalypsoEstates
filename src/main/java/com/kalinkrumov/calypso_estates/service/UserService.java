@@ -131,7 +131,7 @@ public class UserService {
         );
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-//        emailService.sendRegistrationEmail(user.getUsername(), user.getFirstName() + " " + user.getLastName());
+        emailService.sendRegistrationEmail(user.getUsername(), user.getFirstName() + " " + user.getLastName());
 
         return true;
     }

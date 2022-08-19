@@ -39,7 +39,7 @@ public class PropertyController {
     }
 
     @GetMapping("/properties/add")
-    private String addProperty(Model model) {
+    public String addProperty(Model model) {
 
         List<Amenity> amenities = amenityService.getAllAmenities();
 
@@ -49,7 +49,7 @@ public class PropertyController {
     }
 
     @PostMapping("/properties/add")
-    private String addProperty(@RequestParam("images") MultipartFile[] files,
+    public String addProperty(@RequestParam("images") MultipartFile[] files,
                                @Valid PropertyAddDTO propertyAddDTO,
                                RedirectAttributes redirectAttributes) {
 
@@ -75,7 +75,7 @@ public class PropertyController {
     }
 
     @GetMapping("/properties/{slug:.+}")
-    private String propertyDetails(@PathVariable String slug, Model model) {
+    public String propertyDetails(@PathVariable String slug, Model model) {
         Property property = propertyService.getPropertyBySlug(slug);
 
         if (property == null) {
@@ -105,7 +105,7 @@ public class PropertyController {
     }
 
     @GetMapping("/properties/all")
-    private String all(Model model) {
+    public String all(Model model) {
 
         List<Property> allProperties = propertyService.getAllProperties();
 
@@ -115,7 +115,7 @@ public class PropertyController {
     }
 
     @GetMapping("/properties/edit/{slug}")
-    private String edit(@PathVariable String slug, Model model) {
+    public String edit(@PathVariable String slug, Model model) {
         PropertyAddDTO property = propertyService.getPropertyAddDTOBySlug(slug);
         List<Amenity> amenities = amenityService.getAllAmenities();
 
@@ -126,7 +126,7 @@ public class PropertyController {
     }
 
     @PostMapping("/properties/edit/{slug}")
-    private String edit(@PathVariable String slug, @Valid PropertyAddDTO property, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    public String edit(@PathVariable String slug, @Valid PropertyAddDTO property, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("error", bindingResult);
@@ -140,7 +140,7 @@ public class PropertyController {
     }
 
     @GetMapping("/properties/delete/{slug}")
-    private String delete(@PathVariable String slug, RedirectAttributes redirectAttributes) {
+    public String delete(@PathVariable String slug, RedirectAttributes redirectAttributes) {
 
         if (!propertyService.deleteProperty(slug)) {
             redirectAttributes.addFlashAttribute("error", "Could not delete property.");

@@ -131,18 +131,18 @@
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{/properties}">Properties</a>
                 </li>
-<!--                <li class="nav-item">-->
-<!--                    <a class="nav-link" th:href="@{/contacts}">Contacts</a>-->
-<!--                </li>-->
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/contacts}">Contacts</a>
+                </li>
                 <li class="nav-item" sec:authorize="!isAuthenticated()">
                     <a class="nav-link" th:href="@{/users/register}" th:text="#{navbar_register}">Register</a>
                 </li>
                 <li class="nav-item" sec:authorize="!isAuthenticated()">
                     <a class="nav-link" th:href="@{/users/login}" th:text="#{navbar_login}">Login</a>
                 </li>
-                <li class="nav-item" sec:authorize="isAuthenticated()">
-                    <a class="nav-link" th:href="@{/users/profile}">Profile</a>
-                </li>
+<!--                <li class="nav-item" sec:authorize="isAuthenticated()">-->
+<!--                    <a class="nav-link" th:href="@{/users/profile}">Profile</a>-->
+<!--                </li>-->
                 <li class="nav-item" sec:authorize="isAuthenticated()">
                     <form th:action="@{/users/logout}" th:method="post">
                         <input class="btn btn-link nav-link" type="submit" th:value="#{navbar_logout}">

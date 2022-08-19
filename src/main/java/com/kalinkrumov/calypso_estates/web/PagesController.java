@@ -18,7 +18,7 @@ public class PagesController {
     }
 
     @GetMapping()
-    private String index(Model model){
+    public String index(Model model){
 
         List<Property> threeRandomProperties = propertyService.getThreeRandomProperties();
 
@@ -28,12 +28,12 @@ public class PagesController {
     }
 
     @GetMapping("/pages/admins")
-    private String admins(){
+    public String admins(){
         return "admins";
     }
 
     @GetMapping("/pages/moderators")
-    private String moderators(){
+    public String moderators(){
         return "moderators";
     }
 

@@ -40,18 +40,6 @@ public class User {
 
     private boolean isActive;
 
-    @OneToOne
-    private Image profilePicture;
-
-    public Image getProfilePicture() {
-        return profilePicture;
-    }
-
-    public User setProfilePicture(Image profilePicture) {
-        this.profilePicture = profilePicture;
-        return this;
-    }
-
     public boolean isActive() {
         return isActive;
     }
