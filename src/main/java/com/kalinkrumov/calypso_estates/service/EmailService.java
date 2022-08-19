@@ -36,6 +36,22 @@ public class EmailService {
         }
     }
 
+    public void sendMessageReplyEmail(String userEmail, String reply, String subject){
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+
+        try {
+            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage);
+            mimeMessageHelper.setFrom("admin@calypsoestates.com");
+            mimeMessageHelper.setTo(userEmail);
+            mimeMessageHelper.setSubject(subject);
+            mimeMessageHelper.setText(reply);
+
+            javaMailSender.send(mimeMessageHelper.getMimeMessage());
+        }catch (MessagingException e){
+            e.printStackTrace();
+        }
+    }
+
     private String generateMessageContent(String userName){
         Context context = new Context();
         context.setVariable("userName", userName);

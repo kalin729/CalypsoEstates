@@ -25,6 +25,13 @@ public class Message {
     @Column(columnDefinition = "TEXT")
     private String message;
 
+    private String property;
+
+    private boolean replied;
+
+    @Column(columnDefinition = "TEXT")
+    private String reply;
+
     public UUID getId() {
         return id;
     }
@@ -67,6 +74,33 @@ public class Message {
 
     public Message setMessage(String message) {
         this.message = message;
+        return this;
+    }
+
+    public String getProperty() {
+        return property;
+    }
+
+    public Message setProperty(String property) {
+        this.property = property;
+        return this;
+    }
+
+    public boolean isReplied() {
+        return replied;
+    }
+
+    public Message setReplied(boolean replied) {
+        this.replied = replied;
+        return this;
+    }
+
+    public String getReply() {
+        return reply;
+    }
+
+    public Message setReply(String reply) {
+        this.reply = reply;
         return this;
     }
 }

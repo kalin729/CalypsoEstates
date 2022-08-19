@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="fragments/head::head"></head>
+
+<body>
+
+<div th:replace="fragments/navbar::search"></div>
+
+<nav th:replace="fragments/navbar::navbar"></nav>
+
+<!--/ Intro Single star /-->
+<section class="intro-single">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 col-lg-8">
+        <div class="title-single-box">
+          <h1 class="title-single">All messages</h1>
+        </div>
+      </div>
+      <div class="col-md-12 col-lg-4">
+        <nav aria-label="breadcrumb" class="breadcrumb-box d-flex justify-content-lg-end">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a th:href="@{/pages/admins}">Admin page</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">
+              All messages
+            </li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+<!--/ Intro Single End /-->
+
+<!--/ Property Grid Star /-->
+<section class="all-users">
+  <div class="container">
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th scope="col">Email</th>
+        <th scope="col">Property</th>
+        <th scope="col">Answered</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="m : ${messages}">
+        <td><a th:href="@{/message/view/{id}(id = ${m.id})}" th:text="*{m.email}"></a></td>
+        <td th:text="${m.property} != null ? ${m.property} : '-'"></td>
+        <td th:text="${m.replied} != false ? 'Yes' : 'No'"></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+<!--/ Property Grid End /-->
+
+<div th:replace="fragments/footer::footer"></div>
+
+</body>
+</html>

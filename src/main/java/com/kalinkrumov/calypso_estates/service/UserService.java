@@ -33,7 +33,10 @@ public class UserService {
 
     public UserService(UserRepository userRepository,
                        UserRoleRepository userRoleRepository,
-                       PasswordEncoder passwordEncoder, ModelMapper modelMapper, UserDetailsService appUserDetailsService, EmailService emailService) {
+                       PasswordEncoder passwordEncoder,
+                       ModelMapper modelMapper,
+                       UserDetailsService appUserDetailsService,
+                       EmailService emailService) {
         this.userRepository = userRepository;
         this.userRoleRepository = userRoleRepository;
         this.passwordEncoder = passwordEncoder;

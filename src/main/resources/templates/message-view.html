@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="fragments/head::head"></head>
+
+<body>
+
+<div th:replace="fragments/navbar::search"></div>
+
+<nav th:replace="fragments/navbar::navbar"></nav>
+
+<!--/ Intro Single star /-->
+<section class="intro-single">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-lg-8">
+                <div class="title-single-box">
+                    <h1 class="title-single" th:text="'Message from: ' + ${message.senderName}"></h1>
+                </div>
+            </div>
+            <div class="col-md-12 col-lg-4">
+                <nav aria-label="breadcrumb" class="breadcrumb-box d-flex justify-content-lg-end">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a th:href="@{/pages/admins}">Admin page</a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">
+                            Message
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+<!--/ Intro Single End /-->
+
+<!--/ Property Grid Star /-->
+<section class="all-users">
+    <div class="container">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">Sender name</th>
+                <th scope="col">Sender email</th>
+                <th scope="col">Answered status</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td th:text="${message.senderName}"></td>
+                <td th:text="${message.email}"></td>
+                <td th:text="${message.replied} != false ? 'Yes' : 'No'"></td>
+            </tr>
+            </tbody>
+            <thead>
+            <tr>
+                <th colspan="2">Subject</th>
+                <th>Property</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td colspan="2" th:text="${message.subject}"></td>
+                <td>
+                    <a th:if="${message.property} != null" th:text="${property.title}" th:href="'/properties/' + ${property.slug}"></a>
+                    <p th:unless="${message.property} != null" th:text="'-'"></p>
+                </td>
+            </tr>
+            </tbody>
+            <thead>
+            <tr>
+                <th colspan="3">Text</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td colspan="3" th:text="${message.message}"></td>
+            </tr>
+            </tbody>
+        </table>
+        <form th:action="@{/message/reply/{id}(id = ${message.id})}" method="post">
+            <label for="reply" class="text-black font-weight-bold">Reply</label>
+            <textarea id="reply"
+                      name="reply"
+                      th:rows="5"
+                      th:cols="50"
+                      min="1" max="20" class="form-control"
+                      placeholder="Description"
+                      th:disabled="${message.replied}">[[${message.replied}==true ? ${message.reply} : '']]</textarea>
+            <br>
+            <div class="button-holder d-flex">
+                <input type="submit" class="btn btn-info btn-lg" value="Reply" th:disabled="${message.replied}"/>
+            </div>
+        </form>
+    </div>
+</section>
+<!--/ Property Grid End /-->
+
+<div th:replace="fragments/footer::footer"></div>
+
+</body>
+</html>

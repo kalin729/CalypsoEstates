@@ -1,6 +1,7 @@
 package com.kalinkrumov.calypso_estates.web;
 
 import com.kalinkrumov.calypso_estates.model.PropertyNotFoundException;
+import com.kalinkrumov.calypso_estates.model.dto.MessageSendDTO;
 import com.kalinkrumov.calypso_estates.model.dto.PropertyAddDTO;
 import com.kalinkrumov.calypso_estates.model.entity.Amenity;
 import com.kalinkrumov.calypso_estates.model.entity.Image;
@@ -111,7 +112,7 @@ public class PropertyController {
 
         model.addAttribute("allProperties", allProperties);
 
-        return "properties-all";
+        return "property-all";
     }
 
     @GetMapping("/properties/edit/{slug}")
@@ -122,7 +123,7 @@ public class PropertyController {
         model.addAttribute("toEdit", property);
         model.addAttribute("amenities", amenities);
 
-        return "admins";
+        return "property-add";
     }
 
     @PostMapping("/properties/edit/{slug}")
@@ -136,7 +137,7 @@ public class PropertyController {
 
         propertyService.updateProperty(slug, property);
 
-        return "property-add";
+        return "redirect:/properties/all";
     }
 
     @GetMapping("/properties/delete/{slug}")
@@ -155,6 +156,11 @@ public class PropertyController {
     @ModelAttribute
     public PropertyAddDTO propertyAddDTO() {
         return new PropertyAddDTO();
+    }
+
+    @ModelAttribute
+    public MessageSendDTO messageSendDTO(){
+        return new MessageSendDTO();
     }
 
 }

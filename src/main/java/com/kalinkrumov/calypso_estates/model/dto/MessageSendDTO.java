@@ -10,6 +10,8 @@ public class MessageSendDTO {
 
     private String message;
 
+    private String property;
+
     public String getSenderName() {
         return senderName;
     }
@@ -43,6 +45,15 @@ public class MessageSendDTO {
 
     public MessageSendDTO setMessage(String message) {
         this.message = message;
+        return this;
+    }
+
+    public String getProperty() {
+        return property;
+    }
+
+    public MessageSendDTO setProperty(String property) {
+        this.property = property;
         return this;
     }
 }
