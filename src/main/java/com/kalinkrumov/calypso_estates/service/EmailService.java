@@ -25,7 +25,7 @@ public class EmailService {
 
         try {
             MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage);
-            mimeMessageHelper.setFrom("admin@calypsoestates.com");
+            mimeMessageHelper.setFrom("do-not-reply@calypsoestates.com");
             mimeMessageHelper.setTo(userEmail);
             mimeMessageHelper.setSubject("Welcome!");
             mimeMessageHelper.setText(generateMessageContent(userName), true);

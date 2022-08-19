@@ -12,7 +12,7 @@ public class PropertyAddDTO {
 
     private String title;
 
-    private String slug;
+//    private String slug;
 
     private double area;
 
@@ -50,13 +50,13 @@ public class PropertyAddDTO {
         this.title = title;
     }
 
-    public String getSlug() {
-        return slug;
-    }
-
-    public void setSlug(String slug) {
-        this.slug = slug;
-    }
+//    public String getSlug() {
+//        return slug;
+//    }
+//
+//    public void setSlug(String slug) {
+//        this.slug = slug;
+//    }
 
     public double getArea() {
         return area;

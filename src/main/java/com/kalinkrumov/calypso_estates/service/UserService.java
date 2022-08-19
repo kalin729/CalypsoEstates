@@ -68,6 +68,7 @@ public class UserService {
                 .setLastName("Adminov")
 //                .setEmail("admin@admin.admin")
                 .setUsername("admin@calypsoestates.com")
+                .setCreatedAt(LocalDateTime.now())
                 .setPassword(passwordEncoder.encode("admin"));
 
         userRepository.save(admin);
@@ -80,6 +81,7 @@ public class UserService {
                 .setLastName("Moderatorov")
 //                .setEmail("moderator@admin.admin")
                 .setUsername("moderator@calypsoestates.com")
+                .setCreatedAt(LocalDateTime.now())
                 .setPassword(passwordEncoder.encode("moderator"));
 
         userRepository.save(moderator);
@@ -92,6 +94,7 @@ public class UserService {
                 .setLastName("Userov")
 //                .setEmail("user@admin.admin")
                 .setUsername("user@calypsoestates.com")
+                .setCreatedAt(LocalDateTime.now())
                 .setPassword(passwordEncoder.encode("user"));
 
         userRepository.save(user);

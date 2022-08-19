@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Locale;
 
 @Service
 public class PropertyService {
@@ -43,6 +44,8 @@ public class PropertyService {
 
     public void addProperty(PropertyAddDTO propertyAddDTO, List<Image> images) {
         Property property = modelMapper.map(propertyAddDTO, Property.class);
+        String slug = propertyAddDTO.getTitle().replaceAll("\s+", "-").toLowerCase();
+        property.setSlug(slug);
         property.setImages(images);
         property.setCreatedAt(LocalDateTime.now());
         property.setStatus(statusRepository.findByStatus(propertyAddDTO.getStatus()));
