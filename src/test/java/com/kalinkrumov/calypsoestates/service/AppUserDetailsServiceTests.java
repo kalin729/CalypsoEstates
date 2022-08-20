@@ -1,21 +1,19 @@
 package com.kalinkrumov.calypsoestates.service;
 
-import com.kalinkrumov.calypso_estates.model.entity.User;
-import com.kalinkrumov.calypso_estates.model.entity.UserRole;
-import com.kalinkrumov.calypso_estates.model.enums.UserRoleEnum;
-import com.kalinkrumov.calypso_estates.model.user.AppUserDetails;
-import com.kalinkrumov.calypso_estates.repository.UserRepository;
-import com.kalinkrumov.calypso_estates.service.AppUserDetailsService;
+import com.kalinkrumov.calypsoestates.model.entity.User;
+import com.kalinkrumov.calypsoestates.model.entity.UserRole;
+import com.kalinkrumov.calypsoestates.model.enums.UserRoleEnum;
+import com.kalinkrumov.calypsoestates.model.user.AppUserDetails;
+import com.kalinkrumov.calypsoestates.repository.UserRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,12 +28,12 @@ public class AppUserDetailsServiceTests {
     private AppUserDetailsService toTest;
 
     @BeforeEach
-    void setUp(){
+    void setUp() {
         toTest = new AppUserDetailsService(mockUserRepo);
     }
 
     @Test
-    void testLoadUserByUsername_UserExists(){
+    void testLoadUserByUsername_UserExists() {
         User testUser = new User()
                 .setUsername("test@example.com")
                 .setPassword("topsecret")
@@ -45,7 +43,8 @@ public class AppUserDetailsServiceTests {
                 .setCreatedAt(LocalDateTime.now())
                 .setRoles(List.of(
                         new UserRole().setUserRole(UserRoleEnum.USER),
-                        new UserRole().setUserRole(UserRoleEnum.ADMIN)));
+                        new UserRole().setUserRole(UserRoleEnum.ADMIN)))
+                .setActive(true);
 
         when(mockUserRepo.findByUsername(testUser.getUsername())).thenReturn(Optional.of(testUser));
 
@@ -55,6 +54,7 @@ public class AppUserDetailsServiceTests {
         Assertions.assertEquals(testUser.getFirstName(), userDetails.getFirstName());
         Assertions.assertEquals(testUser.getLastName(), userDetails.getLastName());
         Assertions.assertEquals(testUser.getPassword(), userDetails.getPassword());
+        Assertions.assertEquals(testUser.isActive(), userDetails.isActive());
 
         var authorities = userDetails.getAuthorities();
         Assertions.assertEquals(2, authorities.size());
@@ -67,7 +67,10 @@ public class AppUserDetailsServiceTests {
     }
 
     @Test
-    void testLoadUserByUsername_UserDoesNotExist(){
+    void testLoadUserByUsername_UserDoesNotExist() {
+
+        Assertions.assertThrows(UsernameNotFoundException.class,
+                () -> toTest.loadUserByUsername("non-existant@example.com"));
 
     }
 

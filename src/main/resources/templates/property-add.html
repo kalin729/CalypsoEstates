@@ -92,7 +92,7 @@
                     <select id="status" name="status"
                             class="custom-select custom-select-lg mb-3 w-100" th:errorclass="'is-invalid alert-danger'">
                         <option value="" selected>Status</option>
-                        <option th:each="s : ${T(com.kalinkrumov.calypso_estates.model.enums.StatusEnum).values()}"
+                        <option th:each="s : ${T(com.kalinkrumov.calypsoestates.model.enums.StatusEnum).values()}"
                                 th:value="${s}"
                                 th:text="${s}"
                                 th:selected="${toEdit} != null ? '' + ${toEdit.status} == '' + ${s} : false"></option>
