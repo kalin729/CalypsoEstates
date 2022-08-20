@@ -11,23 +11,21 @@ public class AppUserDetails implements UserDetails {
     private final UUID id;
     private final String password;
     private final String username;
-//    private final String email;
     private final String firstName;
     private final String lastName;
     private final Collection<GrantedAuthority> authorities;
+    private final boolean isActive;
 
-    public AppUserDetails(UUID id, String password, String username, String firstName, String lastName, Collection<GrantedAuthority> authorities) {
+    public AppUserDetails(UUID id, String password, String username, String firstName, String lastName, Collection<GrantedAuthority> authorities, boolean isActive) {
         this.id = id;
         this.password = password;
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.authorities = authorities;
+        this.isActive = isActive;
     }
 
-//    public String getEmail() {
-//        return email;
-//    }
 
     public UUID getId() {
         return id;
@@ -39,6 +37,10 @@ public class AppUserDetails implements UserDetails {
 
     public String getLastName() {
         return lastName;
+    }
+
+    public boolean isActive() {
+        return isActive;
     }
 
     @Override
@@ -73,6 +75,6 @@ public class AppUserDetails implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return isActive;
     }
 }

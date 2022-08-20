@@ -12,8 +12,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import java.util.stream.Collectors;
-
 //Returned as a Bean. No Service annotation.
 public class AppUserDetailsService implements UserDetailsService {
 
@@ -45,7 +43,8 @@ public class AppUserDetailsService implements UserDetailsService {
                 user.getUsername(),
                 user.getFirstName(),
                 user.getLastName(),
-                user.getRoles().stream().map(this::map).toList());
+                user.getRoles().stream().map(this::map).toList(),
+                user.isActive());
 
     }
 
