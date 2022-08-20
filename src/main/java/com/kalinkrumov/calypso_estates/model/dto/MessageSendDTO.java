@@ -1,13 +1,26 @@
 package com.kalinkrumov.calypso_estates.model.dto;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+
 public class MessageSendDTO {
 
+    @NotBlank
+    @Size(min = 2)
     private String senderName;
 
+    @Email
+    @NotBlank
+    @Size(min = 3, max = 30)
     private String email;
 
+    @NotBlank
+    @Size(min = 3, max = 50)
     private String subject;
 
+    @NotBlank
+    @Size(min = 10)
     private String message;
 
     private String property;

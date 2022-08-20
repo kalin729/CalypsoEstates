@@ -1,7 +1,10 @@
 package com.kalinkrumov.calypso_estates.model.dto;
 
+import javax.validation.constraints.NotBlank;
+
 public class AmenityAddDTO {
 
+    @NotBlank
     private String description;
 
     public String getDescription() {

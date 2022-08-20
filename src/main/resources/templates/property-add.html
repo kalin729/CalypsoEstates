@@ -6,46 +6,51 @@
 
 <body>
 
-<div th:replace="fragments/navbar::search"></div>
+<!--<div th:replace="fragments/navbar::search"></div>-->
 
 <nav th:replace="fragments/navbar::navbar"></nav>
+<div th:replace="fragments/navbar :: admin-navbar"></div>
 
-<section class="intro-single">
+<section class="intro-single" style="padding-top: 0;">
     <div class="container">
         <!--<div th:replace="fragments/admin-sidenav :: admin-sidenav">-->
         <!--    Admin Sidenav-->
         <!--</div>-->
-        <h2 class="text-center text-white">Add Property</h2>
+        <h2 class="text-center text-black">Add Property</h2>
         <form
-                th:action="${toEdit==null} ? @{/properties/add} : @{/properties/edit/{slug}(slug = ${slug})}"
+                th:action="${toEdit} == null ? @{/properties/add} : @{/properties/edit/{slug}(slug = ${slug})}"
                 th:method="post"
                 th:object="${propertyAddDTO}"
                 class="main-form mx-auto col-md-8 d-flex flex-column justify-content-center"
                 enctype="multipart/form-data">
             <div class="row">
                 <div class="form-group w-100">
-                    <label for="title" class="text-white font-weight-bold">Title</label>
+                    <label for="title" class="text-black font-weight-bold">Title</label>
                     <input
                             id="title"
                             name="title"
                             type="text"
                             class="form-control"
                             placeholder="Title"
-                            th:value="${toEdit}!=null ? ${toEdit.title} : ''"/>
+                            th:value="${toEdit}!=null ? ${toEdit.title} : *{title}"
+                            th:errorclass="'is-invalid alert-danger'"/>
+                    <small class="invalid-feedback text-danger">Title must be between 3 and 30 characters.</small>
                 </div>
 
             </div>
             <div class="row">
                 <div class="form-group col-md-6 mb-3">
-                    <label for="area" class="text-white font-weight-bold">Area</label>
+                    <label for="area" class="text-black font-weight-bold">Area</label>
                     <input id="area"
                            name="area"
-                           type="number" min="1" class="form-control" step="0.01"
+                           type="number" class="form-control" step="0.01"
                            placeholder="Area"
-                           th:value="${toEdit}!=null ? ${toEdit.area} : ''"/>
+                           th:value="${toEdit}!=null ? ${toEdit.area} : *{area}"
+                           th:errorclass="'is-invalid alert-danger'"/>
+                    <small class="invalid-feedback text-danger">Area cannot be blank.</small>
                 </div>
                 <div th:if="${toEdit==null}" class="form-group col-md-6 mb-3">
-                    <label class="text-white font-weight-bold" for="images">Images</label>
+                    <label class="text-black font-weight-bold" for="images">Images</label>
                     <input
                             id="images"
                             name="images"
@@ -54,46 +59,45 @@
                             placeholder="Images"
                             multiple="multiple"
                             accept="image/png, image/gif, image/jpeg"
-                            th:value="${toEdit}!=null ? ${toEdit.images} : ''"
-                    />
-                    <p class="invalid-feedback errors alert alert-danger">
-                        Property image is required.
-                    </p>
+                            th:value="${toEdit}!=null ? ${toEdit.images} : ''"/>
+                    <small class="text-center text-danger" th:if="${image_error} != null" th:text="${image_error}"></small>
                 </div>
             </div>
             <div class="row">
                 <div class="form-group col-md-6 mb-3">
-                    <label for="price" class="text-white font-weight-bold">Price</label>
+                    <label for="price" class="text-black font-weight-bold">Price</label>
                     <input id="price"
                            name="price"
                            type="number" min="1" class="form-control" step="0.01"
                            placeholder="Price"
-                           th:value="${toEdit}!=null ? ${toEdit.price} : ''"/>
+                           th:value="${toEdit}!=null ? ${toEdit.price} : *{price}"
+                           th:errorclass="'is-invalid alert-danger'"/>
+                    <small class="invalid-feedback text-danger">Price cannot be blank.</small>
                 </div>
                 <div class="form-group col-md-6 mb-3">
-                    <label for="location" class="text-white font-weight-bold">Location</label>
+                    <label for="location" class="text-black font-weight-bold">Location</label>
                     <input id="location"
                            name="location"
                            type="text" min="1" max="20" class="form-control"
                            placeholder="Location"
-                           th:value="${toEdit}!=null ? ${toEdit.location} : ''"/>
-                    <!--                <p class="invalid-feedback errors alert alert-danger">-->
-                    <!--                    Confirmation password is required.-->
-                    <!--                </p>-->
+                           th:value="${toEdit}!=null ? ${toEdit.location} : *{location}"
+                           th:errorclass="'is-invalid alert-danger'"/>
+                    <small class="invalid-feedback text-danger">Location cannot be blank.</small>
                 </div>
             </div>
 
             <div class="row">
                 <div class="form-group col-md-6 mb-3">
-                    <label for="status" class="text-white font-weight-bold">Status</label>
+                    <label for="status" class="text-black font-weight-bold">Status</label>
                     <select id="status" name="status"
-                            class="custom-select custom-select-lg mb-3 w-100">
+                            class="custom-select custom-select-lg mb-3 w-100" th:errorclass="'is-invalid alert-danger'">
                         <option value="" selected>Status</option>
                         <option th:each="s : ${T(com.kalinkrumov.calypso_estates.model.enums.StatusEnum).values()}"
                                 th:value="${s}"
                                 th:text="${s}"
                                 th:selected="${toEdit} != null ? '' + ${toEdit.status} == '' + ${s} : false"></option>
                     </select>
+                    <small class="invalid-feedback text-danger">You must choose a status.</small>
                 </div>
                 <div class="form-group col-md-6 mb-3 w-100" style="border: 2px solid #ccc; overflow-y: scroll;">
                     <th:block th:each="a : ${amenities}">
@@ -106,26 +110,30 @@
 
             <div class="row">
                 <div class="form-group col-md-6 mb-3">
-                    <label for="floor" class="text-white font-weight-bold">Floor</label>
+                    <label for="floor" class="text-black font-weight-bold">Floor</label>
                     <input id="floor"
                            name="floor"
                            type="number" class="form-control" step="1"
                            placeholder="Floor"
-                           th:value="${toEdit}!=null ? ${toEdit.floor} : ''"/>
+                           th:value="${toEdit}!=null ? ${toEdit.floor} : *{floor}"
+                           th:errorclass="'is-invalid alert-danger'"/>
+                    <small class="invalid-feedback text-danger">Floor cannot be blank.</small>
                 </div>
                 <div class="form-group col-md-6 mb-3">
-                    <label for="baths" class="text-white font-weight-bold">Baths</label>
+                    <label for="baths" class="text-black font-weight-bold">Baths</label>
                     <input id="baths"
                            name="baths"
                            type="number" class="form-control" step="1"
                            placeholder="Baths"
-                           th:value="${toEdit}!=null ? ${toEdit.baths} : ''"/>
+                           th:value="${toEdit}!=null ? ${toEdit.baths} : *{baths}"
+                           th:errorclass="'is-invalid alert-danger'"/>
+                    <small class="invalid-feedback text-danger">Baths cannot be blank.</small>
                 </div>
             </div>
 
             <div class="row">
                 <div class="form-group col-md-6 mb-3">
-                    <label for="description" class="text-white font-weight-bold">Description</label>
+                    <label for="description" class="text-black font-weight-bold">Description</label>
                     <textarea id="description"
                               name="description"
                               th:rows="5"
@@ -138,7 +146,7 @@
             <div class="custom-control custom-switch">
                 <input class="custom-control-input" type="checkbox" id="active" name="active"
                        th:checked="${toEdit} != null ? ${toEdit.active} : 'false'"/>
-                <label class="custom-control-label" for="active">Active</label>
+                <label class="custom-control-label text-black" for="active">Active</label>
             </div>
 
             <input id="mainImage"
@@ -150,7 +158,8 @@
             <div class="row">
                 <div class="col col-md-4">
                     <div class="button-holder d-flex">
-                        <input onclick="setMainImage()" type="submit" class="btn btn-info btn-lg" value="Add property"/>
+                        <input onclick="setMainImage()" type="submit" class="btn btn-info btn-lg"
+                               th:value="${toEdit} != null ? 'Edit property' : 'Add property'"/>
                     </div>
                 </div>
             </div>

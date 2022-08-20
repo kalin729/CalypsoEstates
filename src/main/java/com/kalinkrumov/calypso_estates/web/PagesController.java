@@ -29,7 +29,7 @@ public class PagesController {
 
     @GetMapping("/pages/admins")
     public String admins(){
-        return "admins";
+        return "redirect:/messages/all";
     }
 
     @GetMapping("/pages/moderators")

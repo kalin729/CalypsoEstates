@@ -6,6 +6,7 @@ import com.kalinkrumov.calypso_estates.repository.MessageRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -26,12 +27,13 @@ public class MessageService {
 
     public void addMessage(MessageSendDTO messageSendDTO) {
         Message message = modelMapper.map(messageSendDTO, Message.class);
+        message.setCreatedAt(LocalDateTime.now());
 
         messageRepository.save(message);
     }
 
     public List<Message> getAllMessages() {
-        return messageRepository.findAll();
+        return messageRepository.findAllByOrderByCreatedAtDesc();
     }
 
     public Message getMessageById(UUID id) {

@@ -24,6 +24,7 @@ public class User {
     @Column(nullable = false, unique = true)
     private String username;
 
+    @Column(nullable = false)
     private String password;
 
     @Column(nullable = false)
@@ -32,7 +33,7 @@ public class User {
     @Column(nullable = false)
     private String lastName;
 
-    @Column(name = "created_at")
+    @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)

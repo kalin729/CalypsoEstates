@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Locale;
 
 @Service
 public class PropertyService {
@@ -65,7 +64,7 @@ public class PropertyService {
     }
 
     public Page<Property> getPropertiesByPage(Pageable pageable) {
-        return propertyRepository.findAll(pageable);
+        return propertyRepository.findAllByActive(pageable, true);
     }
 
     public void removeAmenity(Amenity toDelete) {
@@ -81,12 +80,14 @@ public class PropertyService {
     }
 
     public void updateProperty(String slug, PropertyAddDTO propertyAddDTO) {
+        Property originalProperty = propertyRepository.findBySlug(slug);
         Property property = modelMapper.map(propertyAddDTO, Property.class);
-        property.setId(propertyRepository.findBySlug(slug).getId());
+        property.setId(originalProperty.getId());
         property.setStatus(statusRepository.findByStatus(propertyAddDTO.getStatus()));
-        property.setImages(propertyRepository.findBySlug(slug).getImages());
-        property.setMainImage(propertyRepository.findBySlug(slug).getMainImage());
-        property.setCreatedAt(propertyRepository.findBySlug(slug).getCreatedAt());
+        property.setImages(originalProperty.getImages());
+        property.setMainImage(originalProperty.getMainImage());
+        property.setCreatedAt(originalProperty.getCreatedAt());
+        property.setSlug(originalProperty.getSlug());
 
         propertyRepository.save(property);
     }

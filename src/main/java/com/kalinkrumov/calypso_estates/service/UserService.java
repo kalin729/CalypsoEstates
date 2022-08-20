@@ -66,7 +66,6 @@ public class UserService {
                 .setRoles(roles)
                 .setFirstName("Admin")
                 .setLastName("Adminov")
-//                .setEmail("admin@admin.admin")
                 .setUsername("admin@calypsoestates.com")
                 .setCreatedAt(LocalDateTime.now())
                 .setPassword(passwordEncoder.encode("admin"));
@@ -79,7 +78,6 @@ public class UserService {
                 .setRoles(roles)
                 .setFirstName("Moderator")
                 .setLastName("Moderatorov")
-//                .setEmail("moderator@admin.admin")
                 .setUsername("moderator@calypsoestates.com")
                 .setCreatedAt(LocalDateTime.now())
                 .setPassword(passwordEncoder.encode("moderator"));
@@ -92,7 +90,6 @@ public class UserService {
                 .setRoles(roles)
                 .setFirstName("User")
                 .setLastName("Userov")
-//                .setEmail("user@admin.admin")
                 .setUsername("user@calypsoestates.com")
                 .setCreatedAt(LocalDateTime.now())
                 .setPassword(passwordEncoder.encode("user"));

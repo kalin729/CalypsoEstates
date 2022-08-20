@@ -38,7 +38,7 @@ public class MessageController {
         return "redirect:/contacts";
     }
 
-    @GetMapping("/message/all")
+    @GetMapping("/messages/all")
     public String allMessages(Model model) {
 
         List<Message> messages = messageService.getAllMessages();

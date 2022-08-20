@@ -3,62 +3,85 @@
       xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/head::head"></head>
 
-
 <body>
 
-<div th:replace="fragments/navbar :: navbar">
-    Navbar
-</div>
+<div th:replace="fragments/navbar :: navbar"></div>
+<div th:replace="fragments/navbar :: admin-navbar"></div>
 
-<div class="container">
-    <h2 class="text-center text-black">Properties</h2>
+<!--/ Intro Single star /-->
+<section class="intro-single" style="padding-top: 0;">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-lg-8">
+                <div class="title-single-box">
+                    <h1 class="title-single">All properties</h1>
+                </div>
+            </div>
+            <div class="col-md-12 col-lg-4">
+                <nav aria-label="breadcrumb" class="breadcrumb-box d-flex justify-content-lg-end">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a th:href="@{/pages/admins}">Admin page</a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">
+                            All properties
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+<!--/ Intro Single End /-->
 
-    <section class="intro-single">
-        <div class="col-xs-12 col-md-6" style="margin-bottom: 15px; padding: 5px; border: 1px solid gray;"
-             th:each="p : ${allProperties}"
-             th:object="${p}">
-            <!-- First product box start here-->
-            <div class="prod-info-main prod-wrap clearfix">
-                <div class="row">
-                    <div class="col-md-5 col-sm-12 col-xs-12">
-                        <div class="product-image">
-                            <img th:src="@{'/files/' + *{mainImage}}" class="img-responsive" style="width: 150px;">
-                        </div>
+<section class="all-properties">
+    <div class="container"
+         th:each="p : ${allProperties}"
+         th:object="${p}">
+        <!-- First product box start here-->
+        <div class="prod-info-main prod-wrap clearfix">
+            <div class="row">
+                <div class="col-md-5 col-sm-12 col-xs-12">
+                    <div class="product-image">
+                        <img th:src="@{'/files/' + *{mainImage}}" class="img-responsive"
+                             style="max-width: 300px; height: 200px;">
                     </div>
-                    <div class="col-md-7 col-sm-12 col-xs-12">
-                        <div class="product-deatil">
-                            <h5 class="name">
-                                <a th:text="*{title} + ', ' + *{location}"
-                                   th:href="@{/properties/{slug}(slug = *{slug})}">
-                                    Product Code/Name here
-                                </a>
+                </div>
+                <div class="col-md-7 col-sm-12 col-xs-12">
+                    <div class="product-deatil">
+                        <h5 class="name">
+                            <a th:text="*{title} + ', ' + *{location}"
+                               th:href="@{/properties/{slug}(slug = *{slug})}">
+                                Product Code/Name here
+                            </a>
 
-                            </h5>
-                            <p class="price-container">
-                                <span th:text="'€' + *{price}">PRICE</span>
-                            </p>
-                            <span class="tag1"></span>
-                        </div>
-                        <div class="description">
-                            <p style="max-width: 75ch;" th:text="*{active} == true ? 'Active' : 'Not Active'">Active or not </p>
-                        </div>
-                        <div class="product-info smart-form">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <a th:href="@{/properties/edit/{slug}(slug = *{slug})}"
-                                       class="btn btn-info">Edit</a>
-                                    <a th:href="@{/properties/delete/{slug}(slug = *{slug})}" class="btn btn-danger">Delete</a>
-                                </div>
+                        </h5>
+                        <p class="price-container">
+                            <span th:text="'€' + *{price}">PRICE</span>
+                        </p>
+                        <span class="tag1"></span>
+                    </div>
+                    <div class="description">
+                        <p style="max-width: 75ch;" th:text="*{active} == true ? 'Active' : 'Not Active'">Active or
+                            not </p>
+                    </div>
+                    <div class="product-info smart-form">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <a th:href="@{/properties/edit/{slug}(slug = *{slug})}"
+                                   class="btn btn-info">Edit</a>
+                                <a th:href="@{/properties/delete/{slug}(slug = *{slug})}"
+                                   class="btn btn-danger">Delete</a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- end product -->
         </div>
-    </section>
-
-</div>
+        <!-- end product -->
+        <hr style="border: 0.5px solid black">
+    </div>
+</section>
 
 <div th:replace="fragments/footer::footer"></div>
 </body>

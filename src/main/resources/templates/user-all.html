@@ -6,12 +6,13 @@
 
 <body>
 
-<div th:replace="fragments/navbar::search"></div>
+<!--<div th:replace="fragments/navbar::search"></div>-->
 
 <nav th:replace="fragments/navbar::navbar"></nav>
+<div th:replace="fragments/navbar :: admin-navbar"></div>
 
 <!--/ Intro Single star /-->
-<section class="intro-single">
+<section class="intro-single" style="padding-top: 0;">
     <div class="container">
         <div class="row">
             <div class="col-md-12 col-lg-8">
@@ -42,7 +43,7 @@
         <table class="table table-striped">
             <thead>
             <tr>
-                <th scope="col">Name</th>
+                <th scope="col">Username</th>
                 <th scope="col">Roles</th>
                 <th scope="col">Active</th>
             </tr>
@@ -56,7 +57,7 @@
                        aria-haspopup="true" aria-expanded="false">
                         Roles
                     </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <div class="dropdown-menu" style="width: 200px;" aria-labelledby="navbarDropdown">
                         <form th:action="@{/users/edit_roles/{username}(username = ${u.username})}" th:object="${userRoleChangeDTO}"
                               method="post">
                             <th:block
@@ -64,8 +65,8 @@
                                 <input class="dropdown-item" type="checkbox" name="roles"
                                        th:value="${r.id}"
                                        th:checked="${#lists.contains('' + u.roles, '' + r)}"
-                                       style="width: 10%; margin: 0;" onchange="this.form.submit()">
-                                <label th:text="${r.userRole}"></label>
+                                       style="display: inline-block; width: 10%;" onchange="this.form.submit()">
+                                <label style="width: 80%;" th:text="${r.userRole}"></label>
                             </th:block>
                         </form>
                     </div>

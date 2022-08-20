@@ -1,6 +1,8 @@
 package com.kalinkrumov.calypso_estates.repository;
 
 import com.kalinkrumov.calypso_estates.model.entity.Property;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -13,10 +15,8 @@ public interface PropertyRepository extends JpaRepository<Property, UUID> {
 
     Property findBySlug(String slug);
 
-    @Query(value = "SELECT * FROM properties ORDER BY RAND() LIMIT 3", nativeQuery = true)
+    @Query(value = "SELECT * FROM properties WHERE active = true ORDER BY RAND() LIMIT 3", nativeQuery = true)
     List<Property> getThreeRandomProperties();
 
-
-//    @Query(value = "SELECT p FROM Property p WHERE p.amenities = :amenities")
-//    List<Property> findAllByAmenitiesEquals(@Param("amenities") Set<Amenity> amenities);
+    Page<Property> findAllByActive(Pageable pageable, boolean active);
 }

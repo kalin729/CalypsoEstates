@@ -12,7 +12,7 @@ public class Amenity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(columnDefinition = "TEXT", unique = true, nullable = false)
     private String description;
 
     @ManyToMany(mappedBy = "amenities", fetch = FetchType.EAGER, cascade = CascadeType.ALL)

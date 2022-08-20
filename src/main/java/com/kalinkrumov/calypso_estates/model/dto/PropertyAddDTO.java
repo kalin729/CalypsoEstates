@@ -1,33 +1,40 @@
 package com.kalinkrumov.calypso_estates.model.dto;
 
 import com.kalinkrumov.calypso_estates.model.entity.Amenity;
-import com.kalinkrumov.calypso_estates.model.entity.Image;
-import com.kalinkrumov.calypso_estates.model.entity.Status;
 import com.kalinkrumov.calypso_estates.model.enums.StatusEnum;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.util.List;
 
 public class PropertyAddDTO {
 
+    @NotBlank
+    @Size(min = 3, max = 70)
     private String title;
 
-//    private String slug;
-
+    @NotNull
     private double area;
 
+    @NotNull
     private BigDecimal price;
 
     private String description;
 
+    @NotBlank
     private String location;
 
     private String mainImage;
 
+    @NotNull
     private StatusEnum status;
 
+    @NotNull
     private int floor;
 
+    @NotNull
     private int baths;
 
     private boolean active;
@@ -49,14 +56,6 @@ public class PropertyAddDTO {
     public void setTitle(String title) {
         this.title = title;
     }
-
-//    public String getSlug() {
-//        return slug;
-//    }
-//
-//    public void setSlug(String slug) {
-//        this.slug = slug;
-//    }
 
     public double getArea() {
         return area;

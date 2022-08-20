@@ -4,6 +4,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -16,13 +17,16 @@ public class Message {
     @Type(type = "uuid-char")
     private UUID id;
 
+    @Column(nullable = false)
     private String senderName;
 
+    @Column(nullable = false)
     private String email;
 
+    @Column(nullable = false)
     private String subject;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(columnDefinition = "TEXT", nullable = false)
     private String message;
 
     private String property;
@@ -31,6 +35,9 @@ public class Message {
 
     @Column(columnDefinition = "TEXT")
     private String reply;
+
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
 
     public UUID getId() {
         return id;
@@ -101,6 +108,15 @@ public class Message {
 
     public Message setReply(String reply) {
         this.reply = reply;
+        return this;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public Message setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
         return this;
     }
 }

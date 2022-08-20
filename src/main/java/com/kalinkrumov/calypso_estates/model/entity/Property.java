@@ -23,19 +23,25 @@ public class Property {
     @Type(type = "uuid-char")
     private UUID id;
 
+    @Column(nullable = false)
     private String title;
 
+    @Column(nullable = false, unique = true)
     private String slug;
 
+    @Column(nullable = false)
     private double area;
 
+    @Column(nullable = false)
     private BigDecimal price;
 
+    @Column(nullable = false)
     private String location;
 
-    @Column(name = "created_at")
+    @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
+    @Column(nullable = false)
     private String mainImage;
 
     @Column(columnDefinition = "TEXT")
@@ -51,8 +57,10 @@ public class Property {
     @ManyToOne()
     private Status status;
 
+    @Column(nullable = false)
     private int floor;
 
+    @Column(nullable = false)
     private int baths;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)

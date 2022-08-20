@@ -50,18 +50,28 @@ public class PropertyController {
     }
 
     @PostMapping("/properties/add")
-    public String addProperty(@RequestParam("images") MultipartFile[] files,
-                               @Valid PropertyAddDTO propertyAddDTO,
-                               RedirectAttributes redirectAttributes) {
+    public String addProperty(@RequestParam("images") List<MultipartFile> files,
+                              @Valid PropertyAddDTO propertyAddDTO,
+                              BindingResult bindingResult,
+                              RedirectAttributes redirectAttributes) {
 
-        if (files.length == 0) {
-            redirectAttributes.addFlashAttribute("message", "Please select file/s to upload.");
-            return "redirect:/";
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("propertyAddDTO", propertyAddDTO);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.propertyAddDTO", bindingResult);
+            return "redirect:/properties/add";
         }
 
         List<Image> images = new ArrayList<>();
         for (MultipartFile file : files) {
-            String fileExtension = Objects.requireNonNull(file.getOriginalFilename()).substring(file.getOriginalFilename().lastIndexOf("."));
+            String fileExtension;
+            try {
+                fileExtension = Objects.requireNonNull(file.getOriginalFilename()).substring(file.getOriginalFilename().lastIndexOf("."));
+            } catch (StringIndexOutOfBoundsException e) {
+                redirectAttributes.addFlashAttribute("image_error", "Property must have at least one image.");
+                redirectAttributes.addFlashAttribute("propertyAddDTO", propertyAddDTO);
+                redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.propertyAddDTO", bindingResult);
+                return "redirect:/properties/add";
+            }
             String newFileName = UUID.randomUUID() + fileExtension;
             if (filesStorageService.save(file, newFileName)) {
                 images.add(new Image().setImageUrl(newFileName));
@@ -159,7 +169,7 @@ public class PropertyController {
     }
 
     @ModelAttribute
-    public MessageSendDTO messageSendDTO(){
+    public MessageSendDTO messageSendDTO() {
         return new MessageSendDTO();
     }
 

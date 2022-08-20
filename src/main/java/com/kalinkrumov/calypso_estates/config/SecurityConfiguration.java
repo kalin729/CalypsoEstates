@@ -15,6 +15,9 @@ import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Configuration
 public class SecurityConfiguration {
 
@@ -37,10 +40,12 @@ public class SecurityConfiguration {
                 .antMatchers("/about", "/properties", "/contacts").permitAll()
                 .antMatchers("/").permitAll()
                 .antMatchers("/users/login", "/users/register").anonymous()
-                .antMatchers("/pages/admins").hasRole(UserRoleEnum.MODERATOR.name())
-                .antMatchers("/amenities/edit/**").hasRole(UserRoleEnum.MODERATOR.name())
-                .antMatchers("/pages/all","/pages/edit/**", "/pages/delete/**").hasRole(UserRoleEnum.MODERATOR.name())
-                .antMatchers("/users/all").hasRole(UserRoleEnum.ADMIN.name())
+                .antMatchers("/pages/admins", "/pages/admins/").hasRole(UserRoleEnum.MODERATOR.name())
+                .antMatchers("/messages/all", "/messages/all/", "/message/view/**", "/message/reply/**").hasRole(UserRoleEnum.MODERATOR.name())
+                .antMatchers("/amenities/add", "/amenities/add/", "/amenities/edit/**", "/amenities/delete/**").hasRole(UserRoleEnum.MODERATOR.name())
+                .antMatchers("/pages/all","/pages/all/", "/pages/edit/**", "/pages/delete/**").hasRole(UserRoleEnum.MODERATOR.name())
+                .antMatchers("/properties/all", "/properties/all/", "/properties/add", "/properties/add/", "/properties/edit/**", "/properties/delete/**").hasRole(UserRoleEnum.MODERATOR.name())
+                .antMatchers("/users/all", "/users/all/").hasRole(UserRoleEnum.ADMIN.name())
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().loginPage("/users/login")

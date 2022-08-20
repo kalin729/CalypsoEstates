@@ -19,11 +19,6 @@ public class UserRegisterDTO {
     @Size(min = 3, max = 30)
     private String username;
 
-//    @NotBlank
-//    @Email
-//    @Size(min = 3, max = 30)
-//    private String email;
-
     @NotBlank
     @Size(min = 3, max = 30)
     private String password;
@@ -58,15 +53,6 @@ public class UserRegisterDTO {
         this.username = username;
         return this;
     }
-
-//    public String getEmail() {
-//        return email;
-//    }
-//
-//    public UserRegisterDTO setEmail(String email) {
-//        this.email = email;
-//        return this;
-//    }
 
     public String getPassword() {
         return password;
