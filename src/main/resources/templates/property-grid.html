@@ -106,7 +106,7 @@
               </a>
             </li>
             <li class="page-item active">
-              <a class="page-link" href="#">1</a>
+              <a class="page-link" th:text="${properties.getNumber() + 1}" href="#">1</a>
             </li>
             <li class="page-item next" th:classappend="${properties.hasNext() ? '' : 'disabled'}">
               <a th:if="${properties.hasNext()}" th:href="@{/properties(page=${properties.getNumber() + 1})}" class="page-link" href="#">

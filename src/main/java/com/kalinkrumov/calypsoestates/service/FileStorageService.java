@@ -27,7 +27,6 @@ public class FileStorageService {
 
     public boolean save(MultipartFile file, String newFileName){
         try {
-//            Files.copy(file.getInputStream(), this.ROOT.resolve(file.getOriginalFilename()));
             Files.copy(file.getInputStream(), this.ROOT.resolve(newFileName));
         } catch (IOException e) {
             throw new RuntimeException("Could not store the file. Error: " + e.getMessage());

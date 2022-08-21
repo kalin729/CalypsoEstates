@@ -71,6 +71,7 @@ public class UserService {
                 .setLastName("Adminov")
                 .setUsername("admin@calypsoestates.com")
                 .setCreatedAt(dateTimeProviderService.now())
+                .setActive(true)
                 .setPassword(passwordEncoder.encode("admin"));
 
         userRepository.save(admin);
@@ -83,6 +84,7 @@ public class UserService {
                 .setLastName("Moderatorov")
                 .setUsername("moderator@calypsoestates.com")
                 .setCreatedAt(dateTimeProviderService.now())
+                .setActive(true)
                 .setPassword(passwordEncoder.encode("moderator"));
 
         userRepository.save(moderator);
@@ -95,6 +97,7 @@ public class UserService {
                 .setLastName("Userov")
                 .setUsername("user@calypsoestates.com")
                 .setCreatedAt(dateTimeProviderService.now())
+                .setActive(true)
                 .setPassword(passwordEncoder.encode("user"));
 
         userRepository.save(user);
