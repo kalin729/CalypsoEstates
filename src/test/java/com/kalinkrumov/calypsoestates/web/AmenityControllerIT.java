@@ -92,4 +92,56 @@ public class AmenityControllerIT {
                 .andExpect(redirectedUrl("/amenities/add"));
     }
 
+    @Test
+    @WithMockUser(
+            username = "user@example.com",
+            roles = {"USER"}
+    )
+    void testAmenityEditPagePreviewUser_Forbidden() throws Exception {
+        mockMvc.perform(get("/amenities/edit/{id}", testAmenity.getId())
+                        .with(csrf())
+                )
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithMockUser(
+            username = "admin@example.com",
+            roles = {"ADMIN", "MODERATOR", "USER"}
+    )
+    void testAmenityEditPagePreviewAdmin() throws Exception {
+        mockMvc.perform(get("/amenities/edit/{id}", testAmenity.getId())
+                        .with(csrf())
+                )
+                .andExpect(status().isOk())
+                .andExpect(view().name("amenity-add"));
+    }
+
+    @Test
+    @WithMockUser(
+            username = "admin@example.com",
+            roles = {"ADMIN", "MODERATOR", "USER"}
+    )
+    void testAmenityEdit() throws Exception {
+        mockMvc.perform(post("/amenities/edit/{id}", testAmenity.getId())
+                        .param("description", "Edited Amenity Name")
+                        .with(csrf())
+                )
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/amenities/add"));
+    }
+
+    @Test
+    @WithMockUser(
+            username = "admin@example.com",
+            roles = {"ADMIN", "MODERATOR", "USER"}
+    )
+    void testAmenityDelete() throws Exception {
+        mockMvc.perform(get("/amenities/delete/{id}", testAmenity.getId())
+                        .with(csrf())
+                )
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/amenities/add"));
+    }
+
 }

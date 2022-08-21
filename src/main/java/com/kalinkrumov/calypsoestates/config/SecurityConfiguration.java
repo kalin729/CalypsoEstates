@@ -35,6 +35,7 @@ public class SecurityConfiguration {
                 .antMatchers("/about", "/properties", "/contacts").permitAll()
                 .antMatchers("/").permitAll()
                 .antMatchers("/users/login", "/users/register").anonymous()
+                .antMatchers("/message/send").permitAll()
                 .antMatchers("/pages/admins", "/pages/admins/").hasRole(UserRoleEnum.MODERATOR.name())
                 .antMatchers("/messages/all", "/messages/all/", "/message/view/**", "/message/reply/**").hasRole(UserRoleEnum.MODERATOR.name())
                 .antMatchers("/amenities/add", "/amenities/add/", "/amenities/edit/**", "/amenities/delete/**").hasRole(UserRoleEnum.MODERATOR.name())

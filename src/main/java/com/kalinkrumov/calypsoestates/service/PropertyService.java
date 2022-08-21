@@ -95,6 +95,10 @@ public class PropertyService {
     public boolean deleteProperty(String slug) {
         Property toDelete = propertyRepository.findBySlug(slug);
 
+        if (toDelete == null) {
+            return false;
+        }
+
         toDelete.getAmenities().removeAll(toDelete.getAmenities());
         toDelete.getImages().forEach(i -> filesStorageService.delete(i.getImageUrl()));
         toDelete.getImages().removeAll(toDelete.getImages());
