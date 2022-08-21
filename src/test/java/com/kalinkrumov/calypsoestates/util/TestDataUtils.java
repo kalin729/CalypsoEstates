@@ -20,14 +20,16 @@ public class TestDataUtils {
     private PropertyRepository propertyRepository;
     private AmenityRepository amenityRepository;
     private StatusRepository statusRepository;
+    private MessageRepository messageRepository;
     private DateTimeProviderService dateTimeProviderService;
 
-    public TestDataUtils(UserRepository userRepository, UserRoleRepository userRoleRepository, PropertyRepository propertyRepository, AmenityRepository amenityRepository, StatusRepository statusRepository, DateTimeProviderService dateTimeProviderService) {
+    public TestDataUtils(UserRepository userRepository, UserRoleRepository userRoleRepository, PropertyRepository propertyRepository, AmenityRepository amenityRepository, StatusRepository statusRepository, MessageRepository messageRepository, DateTimeProviderService dateTimeProviderService) {
         this.userRepository = userRepository;
         this.userRoleRepository = userRoleRepository;
         this.propertyRepository = propertyRepository;
         this.amenityRepository = amenityRepository;
         this.statusRepository = statusRepository;
+        this.messageRepository = messageRepository;
         this.dateTimeProviderService = dateTimeProviderService;
     }
 
@@ -84,6 +86,19 @@ public class TestDataUtils {
                         .toList());
 
         return userRepository.save(admin);
+    }
+
+    public Message createTestMessage(){
+        Message message = new Message()
+                .setEmail("testuser@example.com")
+                .setSubject("Test Subject")
+                .setSenderName("Test Sender")
+                .setProperty(null)
+                .setMessage("Test message text.")
+                .setCreatedAt(dateTimeProviderService.now())
+                .setReplied(false);
+
+        return messageRepository.save(message);
     }
 
     public Property createTestProperty() throws IOException {

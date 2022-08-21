@@ -4,7 +4,6 @@ import com.kalinkrumov.calypsoestates.model.entity.Amenity;
 import com.kalinkrumov.calypsoestates.model.entity.Property;
 import com.kalinkrumov.calypsoestates.model.entity.User;
 import com.kalinkrumov.calypsoestates.util.TestDataUtils;
-import org.apache.tomcat.util.http.parser.MediaType;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,7 +18,8 @@ import java.io.IOException;
 import java.util.UUID;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
@@ -58,11 +58,101 @@ public class PropertyControllerIT {
             username = "user@example.com",
             roles = {"USER"}
     )
+    void testAddPropertyPageShowsUser_Forbidden() throws Exception {
+        mockMvc.perform(get("/properties/add")
+                        .with(csrf())
+                )
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithMockUser(
+            username = "admin@example.com",
+            roles = {"ADMIN", "MODERATOR", "USER"}
+    )
+    void testAddPropertyPageShowsAdmin() throws Exception {
+        mockMvc.perform(get("/properties/add")
+                        .with(csrf())
+                )
+                .andExpect(status().isOk())
+                .andExpect(view().name("property-add"));
+    }
+
+    @Test
+    @WithMockUser(
+            username = "user@example.com",
+            roles = {"USER"}
+    )
+    void testEditPropertyPageShowsUser_Forbidden() throws Exception {
+        mockMvc.perform(get("/properties/edit/{slug}", testProperty.getSlug())
+                        .with(csrf())
+                )
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithMockUser(
+            username = "admin@example.com",
+            roles = {"ADMIN", "MODERATOR", "USER"}
+    )
+    void testEditPropertyPageShowsAdmin() throws Exception {
+        mockMvc.perform(get("/properties/edit/{slug}", testProperty.getSlug())
+                        .with(csrf())
+                )
+                .andExpect(status().isOk())
+                .andExpect(view().name("property-add"));
+    }
+
+    @Test
+    @WithMockUser(
+            username = "admin@example.com",
+            roles = {"ADMIN", "MODERATOR", "USER"}
+    )
+    void testEditProperty() throws Exception {
+        mockMvc.perform(get("/properties/edit/{slug}", testProperty.getSlug())
+                .param("title", "testinggggg")
+                .param("area", "120")
+                .param("price", "5300")
+                .param("location", "Sofia")
+                .param("status", "SALE")
+                .param("floor", "3")
+                .param("baths", "2")
+                .param("active", "true")
+                .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(view().name("property-add"));
+    }
+
+    @Test
+    @WithMockUser(
+            username = "admin@example.com",
+            roles = {"ADMIN", "MODERATOR", "USER"}
+    )
+    void testEditPropertyBadValidation() throws Exception {
+        mockMvc.perform(get("/properties/edit/{slug}", testProperty.getSlug())
+                        .param("title", "a")
+                        .param("area", "0")
+                        .param("price", "5300")
+                        .param("location", "Sofia")
+                        .param("status", "SALE")
+                        .param("floor", "3")
+                        .param("baths", "2")
+                        .param("active", "true")
+                        .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(view().name("property-add"));
+    }
+
+    @Test
+    @WithMockUser(
+            username = "user@example.com",
+            roles = {"USER"}
+    )
     void testDeleteByUser_Forbidden() throws Exception {
-        mockMvc.perform(get("/properties/delete/{slug}", testProperty.getSlug()).
-                        with(csrf())
-                ).
-                andExpect(status().isForbidden());
+        mockMvc.perform(get("/properties/delete/{slug}", testProperty.getSlug())
+                        .with(csrf())
+                )
+                .andExpect(status().isForbidden());
     }
 
     @Test
@@ -71,11 +161,11 @@ public class PropertyControllerIT {
             roles = {"MODERATOR", "USER"}
     )
     void testDeleteByModerator() throws Exception {
-        mockMvc.perform(get("/properties/delete/{slug}", testProperty.getSlug()).
-                        with(csrf())
-                ).
-                andExpect(status().is3xxRedirection()).
-                andExpect(view().name("redirect:/properties/all"));
+        mockMvc.perform(get("/properties/delete/{slug}", testProperty.getSlug())
+                        .with(csrf())
+                )
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/properties/all"));
     }
 
     @Test
@@ -84,11 +174,11 @@ public class PropertyControllerIT {
             roles = {"ADMIN", "MODERATOR", "USER"}
     )
     void testDeleteByAdmin() throws Exception {
-        mockMvc.perform(get("/properties/delete/{slug}", testProperty.getSlug()).
-                        with(csrf())
-                ).
-                andExpect(status().is3xxRedirection()).
-                andExpect(view().name("redirect:/properties/all"));
+        mockMvc.perform(get("/properties/delete/{slug}", testProperty.getSlug())
+                        .with(csrf())
+                )
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/properties/all"));
     }
 
     @WithMockUser(
