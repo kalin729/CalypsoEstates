@@ -12,7 +12,7 @@
 </div>
 <section class="intro-single">
     <div class="container">
-        <h2 class="text-center text-white">Register User</h2>
+        <h2 class="text-center text-black" th:text="#{navbar_register}">Register User</h2>
         <form
                 th:action="@{/users/register}"
                 th:method="post"
@@ -20,60 +20,60 @@
                 class="main-form mx-auto col-md-8 d-flex flex-column justify-content-center">
             <div class="row">
                 <div class="form-group col-md-6 mb-3">
-                    <label for="firstName" class="text-black font-weight-bold">First Name</label>
+                    <label for="firstName" class="text-black font-weight-bold" th:text="#{first_name}">First Name</label>
                     <input
                             id="firstName"
                             name="firstName"
                             type="text"
                             class="form-control"
-                            placeholder="First name"
+                            th:placeholder="#{first_name}"
                             th:field="*{firstName}"
                             th:errorclass="'is-invalid alert-danger'"/>
-                    <small class="invalid-feedback text-danger">First name must be between 3 and 30 characters.</small>
+                    <small class="invalid-feedback text-danger" th:text="#{first_name_validation}">First name must be between 3 and 30 characters.</small>
                 </div>
                 <div class="form-group col-md-6 mb-3">
-                    <label for="lastName" class="text-black font-weight-bold">Last Name</label>
+                    <label for="lastName" class="text-black font-weight-bold" th:text="#{last_name}">Last Name</label>
                     <input id="lastName"
                            name="lastName"
                            type="text" min="2" max="20" class="form-control"
-                           placeholder="Last name"
+                           th:placeholder="#{last_name}"
                            th:field="*{lastName}"
                            th:errorclass="'is-invalid alert-danger'"/>
-                    <small class="invalid-feedback text-danger">Last name must be between 3 and 30 characters.</small>
+                    <small class="invalid-feedback text-danger" th:text="#{last_name_validation}">Last name must be between 3 and 30 characters.</small>
                 </div>
 
             </div>
             <div class="row">
                 <div class="form-group col-md-6 mb-3">
-                    <label for="username" class="text-black font-weight-bold">Email</label>
+                    <label for="username" class="text-black font-weight-bold" th:text="#{username}">Email</label>
                     <input id="username"
                            name="username"
                            type="text" min="2" max="20" class="form-control"
-                           placeholder="Email"
+                           th:placeholder="#{username}"
                            th:field="*{username}"
                            th:errorclass="'is-invalid alert-danger'"/>
-                    <small class="invalid-feedback text-danger">Invalid email.</small>
+                    <small class="invalid-feedback text-danger" th:text="#{email_validation}">Invalid email.</small>
                 </div>
             </div>
             <div class="row">
                 <div class="form-group col-md-6 mb-3">
-                    <label for="password" class="text-black font-weight-bold">Password</label>
+                    <label for="password" class="text-black font-weight-bold" th:text="#{password}">Password</label>
                     <input id="password"
                            name="password"
                            type="password" min="2" max="20" class="form-control"
-                           placeholder="Password"
+                           th:placeholder="#{password}"
                            th:errorclass="'is-invalid alert-danger'"/>
-                    <small class="invalid-feedback text-danger password-error">Password must be between 3 and 30
+                    <small class="invalid-feedback text-danger password-error" th:text="#{password_validation}">Password must be between 3 and 30
                         characters.</small>
                 </div>
                 <div class="form-group col-md-6 mb-3">
-                    <label for="confirmPassword" class="text-black font-weight-bold">Confirm Password</label>
+                    <label for="confirmPassword" class="text-black font-weight-bold" th:text="#{confirm_password}">Confirm Password</label>
                     <input id="confirmPassword"
                            name="confirmPassword"
                            type="password" min="2" max="20" class="form-control"
-                           placeholder="Confirm your password"
+                           th:placeholder="#{confirm_password}"
                            th:errorclass="'is-invalid alert-danger'"/>
-                    <small class="invalid-feedback text-danger password-error">Password must be between 3 and 30
+                    <small class="invalid-feedback text-danger password-error" th:text="#{password_validation}">Password must be between 3 and 30
                         characters.</small>
                 </div>
             </div>
@@ -82,7 +82,7 @@
                 <div class="col col-md-4">
                     <div class="button-holder d-flex">
                         <input type="submit" class="btn btn-info btn-lg"
-                               value="Create account"/>
+                               th:value="#{create_account}"/>
                     </div>
                 </div>
             </div>
