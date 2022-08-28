@@ -32,7 +32,7 @@ public class SecurityConfiguration {
         http.authorizeRequests()
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                 .antMatchers("/lib/**", "/img/**", "/files/**").permitAll()
-                .antMatchers("/about", "/properties", "/contacts").permitAll()
+                .antMatchers("/about", "/properties", "/properties/**", "/contacts").permitAll()
                 .antMatchers("/").permitAll()
                 .antMatchers("/users/login", "/users/register").anonymous()
                 .antMatchers("/message/send").permitAll()

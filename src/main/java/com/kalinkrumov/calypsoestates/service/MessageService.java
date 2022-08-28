@@ -7,7 +7,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -17,18 +16,28 @@ public class MessageService {
     private final MessageRepository messageRepository;
     private final ModelMapper modelMapper;
     private final EmailService emailService;
+    private final DateTimeProviderService dateTimeProvider;
 
     public MessageService(MessageRepository messageRepository,
                           ModelMapper modelMapper,
-                          EmailService emailService) {
+                          EmailService emailService, DateTimeProviderService dateTimeProvider) {
         this.messageRepository = messageRepository;
         this.modelMapper = modelMapper;
         this.emailService = emailService;
+        this.dateTimeProvider = dateTimeProvider;
     }
 
     public void addMessage(MessageSendDTO messageSendDTO) {
-        Message message = modelMapper.map(messageSendDTO, Message.class);
-        message.setCreatedAt(LocalDateTime.now());
+//        Message message = modelMapper.map(messageSendDTO, Message.class);
+        Message message = new Message();
+        message.setMessage(messageSendDTO.getMessage());
+        message.setSenderName(messageSendDTO.getSenderName());
+        message.setReplied(false);
+        message.setReply(null);
+        message.setEmail(messageSendDTO.getEmail());
+        message.setSubject(messageSendDTO.getSubject());
+        message.setProperty(messageSendDTO.getProperty());
+        message.setCreatedAt(dateTimeProvider.now());
 
         messageRepository.save(message);
     }
